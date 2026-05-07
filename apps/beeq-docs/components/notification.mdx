@@ -3,6 +3,7 @@ title: Notification
 description: "Notifications deliver important information to users in a non-intrusive way, surfacing system messages, status updates, and alerts without interrupting the current flow."
 ---
 
+import { CardTile } from "/snippets/CardTile.jsx";
 import { CodeLivePreview } from "/snippets/CodeLivePreview.jsx";
 
 <Frame className="px-4 py-4" caption="Notification component overview">
@@ -10,10 +11,10 @@ import { CodeLivePreview } from "/snippets/CodeLivePreview.jsx";
   <img className="hidden dark:block" src="/components/images/notification/notification-overview-dark.svg" alt="BEEQ Notification component overview" />
 </Frame>
 
-Notifications inform people about significant events, status changes, or updates that need their awareness — without requiring an immediate response. They appear at the edge of the interface, stack gracefully when multiple are present, and dismiss automatically or on demand.
+Notifications inform people about significant events, status changes, or updates that need their awareness without requiring an immediate response. They appear at the edge of the interface, stack gracefully when multiple are present, and dismiss automatically or on demand.
 
 <Note>
-  Use notifications for system-level messages and status updates, not as feedback on direct user actions. For that, use inline validation or toasts closer to the relevant element.
+  Use notifications for system-level messages and status updates. When feedback belongs directly to a field, control, or focused task area, keep it closer to that context instead.
 </Note>
 
 ## When to use
@@ -25,64 +26,95 @@ Notifications inform people about significant events, status changes, or updates
       Use notifications when
     </span>
     - Communicating system events, errors, or status changes users need to know about
-    - Providing asynchronous feedback that is not tied to a specific field or action
+    - Providing asynchronous feedback that is not tied to a specific field or control
     - Stacking multiple independent alerts in a fixed portal without blocking content
+    - Showing updates that users should notice but do not need to answer immediately
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="thumbs-down" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
       Do not use notifications when
     </span>
-    - The feedback is a direct result of a user action — use inline validation instead
-    - The message is so critical that the user must not be able to miss or dismiss it — use a dialog
-    - The text is too long to scan quickly; notifications should be concise
+    - The feedback is a direct result of a user action and belongs near that action
+    - The message is so critical that users must not be able to miss or dismiss it
+    - The text is too long to scan quickly
+    - The message needs detailed explanation rather than a short, scannable summary
   </Card>
 </CardGroup>
 
-## Notification patterns
+## Patterns
 
 <CardGroup cols={2}>
-  <Card title="Default (info)">
-    Use the default notification for standard informational messages and updates.
-  </Card>
-  <Card title="Error">
-    Use the error type for critical issues that require immediate attention.
-  </Card>
-  <Card title="Neutral">
-    Use the neutral type for non-urgent informational messages without a status connotation.
-  </Card>
-  <Card title="Success">
-    Use the success type to confirm a completed action or communicate positive outcomes.
-  </Card>
-  <Card title="Warning">
-    Use the warning type to highlight potential issues or items that need attention.
-  </Card>
-  <Card title="Custom icon">
-    Override the default icon using the `icon` slot to align with your application's branding.
-  </Card>
-  <Card title="Stacked (toast)">
-    Use the `toast()` method to stack multiple notifications in a fixed portal outside the document flow.
-  </Card>
+  <CardTile title="Basic">
+    A standard notification containing a title and description to give users a quick overview.
+  </CardTile>
+  <CardTile title="With icon">
+    Includes a title, description, and icon so users can distinguish the meaning of the notification more quickly.
+  </CardTile>
+  <CardTile title="With icon and link">
+    Includes a title, icon, and description with an optional link. Links that lead to different pages should open in a new tab.
+  </CardTile>
+  <CardTile title="With icon, links, and buttons">
+    These notifications enable users to take specific actions directly from the notification through footer buttons and linked content.
+  </CardTile>
 </CardGroup>
 
 ## Anatomy
 
-<Frame className="px-4 py-4" caption="Notification anatomy">
-  <img className="block dark:hidden" src="/components/images/notification/notification-anatomy-light.svg" alt="Notification anatomy" />
-  <img className="hidden dark:block" src="/components/images/notification/notification-anatomy-dark.svg" alt="Notification anatomy" />
+<Frame className="px-4 py-4" caption="Notification component anatomy">
+  <img className="block dark:hidden" src="/components/images/notification/notification-anatomy-light.svg" alt="BEEQ Notification component anatomy" />
+  <img className="hidden dark:block" src="/components/images/notification/notification-anatomy-dark.svg" alt="BEEQ Notification component anatomy" />
 </Frame>
 
-A notification is composed of an icon area, a content area, and an optional footer with actions.
+A notification is composed of a container, an icon, a label, an optional close button, an optional description, and optional call-to-action buttons.
 
 | Part | Element | Description |
 |---|---|---|
-| **1** | Icon | A semantic icon that communicates the notification type at a glance |
-| **2** | Title | The primary message in the notification (default slot) |
-| **3** | Body | An optional description or supporting text with optional links (`body` slot) |
-| **4** | Footer | Optional action area for buttons (`footer` slot) |
-| **5** | Close button | Allows the user to dismiss the notification manually |
+| **1** | Container | The outer surface that groups the notification content into one message block |
+| **2** | Icon | A semantic icon that communicates the notification type at a glance |
+| **3** | Label | The primary message in the notification (default slot) |
+| **4** | Close button | Optional control that allows the user to dismiss the notification manually |
+| **5** | Description | Optional supporting text or links shown in the `body` slot |
+| **6** | CTA buttons | Optional action buttons shown in the `footer` slot |
 
-## Common usage patterns
+## Design guidelines
+
+Choose the notification treatment that matches the urgency of the message without interrupting the current task.
+
+<CardGroup cols={2}>
+  <CardTile
+    title="Keep the message concise"
+    imageLightSrc="/components/images/notification/notification-message-guidance-light.svg"
+    imageDarkSrc="/components/images/notification/notification-message-guidance-dark.svg"
+  >
+    Lead with the most important information. Notifications work best when users can understand them in a quick scan.
+  </CardTile>
+  <CardTile
+    title="Use the right semantic type"
+    imageLightSrc="/components/images/notification/notification-type-guidance-light.svg"
+    imageDarkSrc="/components/images/notification/notification-type-guidance-dark.svg"
+  >
+    Match the type to the meaning of the message so the icon and visual treatment reinforce the content.
+  </CardTile>
+</CardGroup>
+
+<Steps>
+  <Step title="Choose the purpose">
+    Start by deciding whether the message is informational, successful, cautionary, or error-related. That determines the right `type`.
+  </Step>
+  <Step title="Decide whether actions are needed">
+    Add footer actions only when users genuinely need a next step such as retrying, reviewing, or navigating.
+  </Step>
+  <Step title="Choose placement">
+    Use inline open notifications for contained layouts. Use `toast()` for stacked, portal-based notifications outside the document flow.
+  </Step>
+</Steps>
+
+<Note>
+  If you use `auto-dismiss`, make sure the timeout gives users enough time to read the content and does not remove important information too quickly.
+</Note>
+
+## Usage
 
 ### Default
 
@@ -91,73 +123,63 @@ Use the default `info` notification for standard messages and updates.
 <CodeLivePreview
   code={`
   <style>
-    .notification--default {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
+    @scope {
+      :scope {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: var(--bq-spacing-m) !important;
+      }
 
-    .notification--default .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      .footer-btns {
+        display: flex;
+        gap: var(--bq-spacing-xs);
+      }
+
+      bq-notification[open] {
+        display: block;
+      }
     }
-        
-    bq-notification[open] { display: block; }
   </style>
 
-  <div class="notification--default">
-    <bq-notification open>Title</bq-notification>
+  <bq-notification open>Title</bq-notification>
 
-    <bq-notification open>
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
+  <bq-notification open>
+    Title
+    <span slot="body">
+      This is some description text
+      <a class="bq-link" href="https://example.com">Link</a>
+    </span>
+  </bq-notification>
 
-    <bq-notification open>
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div class="footer-btns" slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-  </div>
+  <bq-notification open>
+    Title
+    <span slot="body">
+      This is some description text
+      <a class="bq-link" href="https://example.com">Link</a>
+    </span>
+    <div class="footer-btns" slot="footer">
+      <bq-button size="small">Button</bq-button>
+      <bq-button appearance="link" size="small">Button</bq-button>
+    </div>
+  </bq-notification>
 
   <script>
-    (() => { // isolate scope for demo purposes
-      const notifications = Array.from(document.querySelectorAll('.notification--default bq-notification'));
+    (() => {
+      const root = document.currentScript?.closest('.preview') || document.currentScript?.parentElement;
+      if (!root) return;
+
+      const notifications = Array.from(root.querySelectorAll('bq-notification'));
       notifications.forEach((notification) => {
         notification.addEventListener('bqHide', () => {
-          setTimeout(() => { notification.open = true; }, 1500);
+          setTimeout(() => {
+            notification.show();
+          }, 1500);
         });
       });
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .notification--default {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-
-    .notification--default .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-notification open>Title</bq-notification>
 
@@ -182,47 +204,32 @@ Use the default `info` notification for standard messages and updates.
     </bq-notification>
     ```
 
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const notifications = Array.from(document.querySelectorAll('bq-notification'));
-    notifications.forEach((notification) => {
-      notification.addEventListener('bqHide', () => {
-        setTimeout(() => { notification.open = true; }, 1500);
-      });
-    });
-    ```
-
     ```jsx React icon="react"
     import { BqButton, BqNotification } from "@beeq/react";
 
-    export function DefaultNotification() {
-      return (
-        <div className="notification--default">
-          <BqNotification open>Title</BqNotification>
+    <>
+      <BqNotification open>Title</BqNotification>
 
-          <BqNotification open>
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-          </BqNotification>
+      <BqNotification open>
+        Title
+        <span slot="body">
+          This is some description text{" "}
+          <a className="bq-link" href="https://example.com">Link</a>
+        </span>
+      </BqNotification>
 
-          <BqNotification open>
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-            <div className="footer-btns" slot="footer">
-              <BqButton size="small">Button</BqButton>
-              <BqButton appearance="link" size="small">Button</BqButton>
-            </div>
-          </BqNotification>
+      <BqNotification open>
+        Title
+        <span slot="body">
+          This is some description text{" "}
+          <a className="bq-link" href="https://example.com">Link</a>
+        </span>
+        <div slot="footer">
+          <BqButton size="small">Button</BqButton>
+          <BqButton appearance="link" size="small">Button</BqButton>
         </div>
-      );
-    }
+      </BqNotification>
+    </>
     ```
 
     ```html Angular icon="angular"
@@ -258,793 +265,115 @@ Use the default `info` notification for standard messages and updates.
     </script>
 
     <template>
-      <div class="notification--default">
-        <BqNotification open>Title</BqNotification>
+      <BqNotification open>Title</BqNotification>
 
-        <BqNotification open>
-          Title
-          <span slot="body">
-            This is some description text
-            <a class="bq-link" href="https://example.com">Link</a>
-          </span>
-        </BqNotification>
+      <BqNotification open>
+        Title
+        <span slot="body">
+          This is some description text
+          <a class="bq-link" href="https://example.com">Link</a>
+        </span>
+      </BqNotification>
 
-        <BqNotification open>
-          Title
-          <span slot="body">
-            This is some description text
-            <a class="bq-link" href="https://example.com">Link</a>
-          </span>
-          <div class="footer-btns" slot="footer">
-            <BqButton size="small">Button</BqButton>
-            <BqButton appearance="link" size="small">Button</BqButton>
-          </div>
-        </BqNotification>
-      </div>
+      <BqNotification open>
+        Title
+        <span slot="body">
+          This is some description text
+          <a class="bq-link" href="https://example.com">Link</a>
+        </span>
+        <div slot="footer">
+          <BqButton size="small">Button</BqButton>
+          <BqButton appearance="link" size="small">Button</BqButton>
+        </div>
+      </BqNotification>
     </template>
     ```
   </CodeGroup>
 </CodeLivePreview>
 
 <Tip>
-  The notification takes up 100% of its parent container's width. Wrap it in a container with a `max-width` if you need a constrained layout.
+  Notifications take up the full width of their parent container. Wrap them in a container with a `max-width` if you need a more constrained layout.
 </Tip>
 
-### Error
+## Options
 
-Use `type="error"` for critical issues that require immediate user attention.
+### Semantic types
+
+Use semantic `type` values to communicate severity and intent clearly.
 
 <CodeLivePreview
   code={`
   <style>
-    .notification--error {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
+    @scope {
+      :scope {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: var(--bq-spacing-m) !important;
+      }
 
-    .notification--error .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      bq-notification[open] {
+        display: block;
+      }
     }
   </style>
 
-  <div class="notification--error">
-    <bq-notification open type="error">Title</bq-notification>
-
-    <bq-notification open type="error">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="error">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div class="footer-btns" slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-  </div>
+  <bq-notification open type="error">Error</bq-notification>
+  <bq-notification open type="neutral">Neutral</bq-notification>
+  <bq-notification open type="success">Success</bq-notification>
+  <bq-notification open type="warning">Warning</bq-notification>
 
   <script>
-    (() => { // isolate scope for demo purposes
-      const notifications = Array.from(document.querySelectorAll('.notification--error bq-notification'));
+    (() => {
+      const root = document.currentScript?.closest('.preview') || document.currentScript?.parentElement;
+      if (!root) return;
+
+      const notifications = Array.from(root.querySelectorAll('bq-notification'));
       notifications.forEach((notification) => {
         notification.addEventListener('bqHide', () => {
-          setTimeout(() => { notification.open = true; }, 1500);
+          setTimeout(() => {
+            notification.show();
+          }, 1500);
         });
       });
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .notification--error {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-    ```
-
     ```html HTML icon="html5"
-    <bq-notification open type="error">Title</bq-notification>
-
-    <bq-notification open type="error">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="error">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const notifications = Array.from(document.querySelectorAll('bq-notification'));
-    notifications.forEach((notification) => {
-      notification.addEventListener('bqHide', () => {
-        setTimeout(() => { notification.open = true; }, 1500);
-      });
-    });
+    <bq-notification open type="error">Error</bq-notification>
+    <bq-notification open type="neutral">Neutral</bq-notification>
+    <bq-notification open type="success">Success</bq-notification>
+    <bq-notification open type="warning">Warning</bq-notification>
     ```
 
     ```jsx React icon="react"
-    import { BqButton, BqNotification } from "@beeq/react";
+    import { BqNotification } from "@beeq/react";
 
-    export function ErrorNotification() {
-      return (
-        <div className="notification--error">
-          <BqNotification open type="error">Title</BqNotification>
-
-          <BqNotification open type="error">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-          </BqNotification>
-
-          <BqNotification open type="error">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-            <div slot="footer">
-              <BqButton size="small">Button</BqButton>
-              <BqButton appearance="link" size="small">Button</BqButton>
-            </div>
-          </BqNotification>
-        </div>
-      );
-    }
+    <>
+      <BqNotification open type="error">Error</BqNotification>
+      <BqNotification open type="neutral">Neutral</BqNotification>
+      <BqNotification open type="success">Success</BqNotification>
+      <BqNotification open type="warning">Warning</BqNotification>
+    </>
     ```
 
     ```html Angular icon="angular"
-    <bq-notification open type="error">Title</bq-notification>
-
-    <bq-notification open type="error">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="error">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
+    <bq-notification open type="error">Error</bq-notification>
+    <bq-notification open type="neutral">Neutral</bq-notification>
+    <bq-notification open type="success">Success</bq-notification>
+    <bq-notification open type="warning">Warning</bq-notification>
     ```
 
     ```vue Vue icon="vuejs"
     <script setup lang="ts">
-    import { BqButton, BqNotification } from "@beeq/vue";
+    import { BqNotification } from "@beeq/vue";
     </script>
 
     <template>
-      <BqNotification open type="error">Title</BqNotification>
-
-      <BqNotification open type="error">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-      </BqNotification>
-
-      <BqNotification open type="error">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-        <div slot="footer">
-          <BqButton size="small">Button</BqButton>
-          <BqButton appearance="link" size="small">Button</BqButton>
-        </div>
-      </BqNotification>
-    </template>
-    ```
-  </CodeGroup>
-</CodeLivePreview>
-
-### Neutral
-
-Use `type="neutral"` for non-urgent informational messages that carry no status connotation.
-
-<CodeLivePreview
-  code={`
-  <style>
-    .notification--neutral {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-
-    .notification--neutral .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
-    }
-  </style>
-
-  <div class="notification--neutral">
-    <bq-notification open type="neutral">Title</bq-notification>
-
-    <bq-notification open type="neutral">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="neutral">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div class="footer-btns" slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-  </div>
-
-  <script>
-    (() => { // isolate scope for demo purposes
-      const notifications = Array.from(document.querySelectorAll('.notification--neutral bq-notification'));
-      notifications.forEach((notification) => {
-        notification.addEventListener('bqHide', () => {
-          setTimeout(() => { notification.open = true; }, 1500);
-        });
-      });
-    })();
-  </script>`}
->
-  <CodeGroup>
-    ```css CSS icon="css"
-    .notification--neutral {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-    ```
-
-    ```html HTML icon="html5"
-    <bq-notification open type="neutral">Title</bq-notification>
-
-    <bq-notification open type="neutral">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="neutral">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const notifications = Array.from(document.querySelectorAll('bq-notification'));
-    notifications.forEach((notification) => {
-      notification.addEventListener('bqHide', () => {
-        setTimeout(() => { notification.open = true; }, 1500);
-      });
-    });
-    ```
-
-    ```jsx React icon="react"
-    import { BqButton, BqNotification } from "@beeq/react";
-
-    export function NeutralNotification() {
-      return (
-        <div className="notification--neutral">
-          <BqNotification open type="neutral">Title</BqNotification>
-
-          <BqNotification open type="neutral">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-          </BqNotification>
-
-          <BqNotification open type="neutral">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-            <div slot="footer">
-              <BqButton size="small">Button</BqButton>
-              <BqButton appearance="link" size="small">Button</BqButton>
-            </div>
-          </BqNotification>
-        </div>
-      );
-    }
-    ```
-
-    ```html Angular icon="angular"
-    <bq-notification open type="neutral">Title</bq-notification>
-
-    <bq-notification open type="neutral">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="neutral">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```vue Vue icon="vuejs"
-    <script setup lang="ts">
-    import { BqButton, BqNotification } from "@beeq/vue";
-    </script>
-
-    <template>
-      <BqNotification open type="neutral">Title</BqNotification>
-
-      <BqNotification open type="neutral">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-      </BqNotification>
-
-      <BqNotification open type="neutral">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-        <div slot="footer">
-          <BqButton size="small">Button</BqButton>
-          <BqButton appearance="link" size="small">Button</BqButton>
-        </div>
-      </BqNotification>
-    </template>
-    ```
-  </CodeGroup>
-</CodeLivePreview>
-
-### Success
-
-Use `type="success"` to confirm a completed action or communicate a positive outcome.
-
-<CodeLivePreview
-  code={`
-  <style>
-    .notification--success {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-
-    .notification--success .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
-    }
-  </style>
-
-  <div class="notification--success">
-    <bq-notification open type="success">Title</bq-notification>
-
-    <bq-notification open type="success">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="success">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div class="footer-btns" slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-  </div>
-
-  <script>
-    (() => { // isolate scope for demo purposes
-      const notifications = Array.from(document.querySelectorAll('.notification--success bq-notification'));
-      notifications.forEach((notification) => {
-        notification.addEventListener('bqHide', () => {
-          setTimeout(() => { notification.open = true; }, 1500);
-        });
-      });
-    })();
-  </script>`}
->
-  <CodeGroup>
-    ```css CSS icon="css"
-    .notification--success {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-    ```
-
-    ```html HTML icon="html5"
-    <bq-notification open type="success">Title</bq-notification>
-
-    <bq-notification open type="success">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="success">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const notifications = Array.from(document.querySelectorAll('bq-notification'));
-    notifications.forEach((notification) => {
-      notification.addEventListener('bqHide', () => {
-        setTimeout(() => { notification.open = true; }, 1500);
-      });
-    });
-    ```
-
-    ```jsx React icon="react"
-    import { BqButton, BqNotification } from "@beeq/react";
-
-    export function SuccessNotification() {
-      return (
-        <div className="notification--success">
-          <BqNotification open type="success">Title</BqNotification>
-
-          <BqNotification open type="success">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-          </BqNotification>
-
-          <BqNotification open type="success">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-            <div slot="footer">
-              <BqButton size="small">Button</BqButton>
-              <BqButton appearance="link" size="small">Button</BqButton>
-            </div>
-          </BqNotification>
-        </div>
-      );
-    }
-    ```
-
-    ```html Angular icon="angular"
-    <bq-notification open type="success">Title</bq-notification>
-
-    <bq-notification open type="success">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="success">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```vue Vue icon="vuejs"
-    <script setup lang="ts">
-    import { BqButton, BqNotification } from "@beeq/vue";
-    </script>
-
-    <template>
-      <BqNotification open type="success">Title</BqNotification>
-
-      <BqNotification open type="success">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-      </BqNotification>
-
-      <BqNotification open type="success">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-        <div slot="footer">
-          <BqButton size="small">Button</BqButton>
-          <BqButton appearance="link" size="small">Button</BqButton>
-        </div>
-      </BqNotification>
-    </template>
-    ```
-  </CodeGroup>
-</CodeLivePreview>
-
-### Warning
-
-Use `type="warning"` to highlight potential issues or items that require attention before proceeding.
-
-<CodeLivePreview
-  code={`
-  <style>
-    .notification--warning {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-
-    .notification--warning .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
-    }
-  </style>
-
-  <div class="notification--warning">
-    <bq-notification open type="warning">Title</bq-notification>
-
-    <bq-notification open type="warning">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="warning">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div class="footer-btns" slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-  </div>
-
-  <script>
-    (() => { // isolate scope for demo purposes
-      const notifications = Array.from(document.querySelectorAll('.notification--warning bq-notification'));
-      notifications.forEach((notification) => {
-        notification.addEventListener('bqHide', () => {
-          setTimeout(() => { notification.open = true; }, 1500);
-        });
-      });
-    })();
-  </script>`}
->
-  <CodeGroup>
-    ```css CSS icon="css"
-    .notification--warning {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-    ```
-
-    ```html HTML icon="html5"
-    <bq-notification open type="warning">Title</bq-notification>
-
-    <bq-notification open type="warning">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="warning">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const notifications = Array.from(document.querySelectorAll('bq-notification'));
-    notifications.forEach((notification) => {
-      notification.addEventListener('bqHide', () => {
-        setTimeout(() => { notification.open = true; }, 1500);
-      });
-    });
-    ```
-
-    ```jsx React icon="react"
-    import { BqButton, BqNotification } from "@beeq/react";
-
-    export function WarningNotification() {
-      return (
-        <div className="notification--warning">
-          <BqNotification open type="warning">Title</BqNotification>
-
-          <BqNotification open type="warning">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-          </BqNotification>
-
-          <BqNotification open type="warning">
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-            <div slot="footer">
-              <BqButton size="small">Button</BqButton>
-              <BqButton appearance="link" size="small">Button</BqButton>
-            </div>
-          </BqNotification>
-        </div>
-      );
-    }
-    ```
-
-    ```html Angular icon="angular"
-    <bq-notification open type="warning">Title</bq-notification>
-
-    <bq-notification open type="warning">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
-
-    <bq-notification open type="warning">
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-    ```
-
-    ```vue Vue icon="vuejs"
-    <script setup lang="ts">
-    import { BqButton, BqNotification } from "@beeq/vue";
-    </script>
-
-    <template>
-      <BqNotification open type="warning">Title</BqNotification>
-
-      <BqNotification open type="warning">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-      </BqNotification>
-
-      <BqNotification open type="warning">
-        Title
-        <span slot="body">
-          This is some description text
-          <a class="bq-link" href="https://example.com">Link</a>
-        </span>
-        <div slot="footer">
-          <BqButton size="small">Button</BqButton>
-          <BqButton appearance="link" size="small">Button</BqButton>
-        </div>
-      </BqNotification>
+      <BqNotification open type="error">Error</BqNotification>
+      <BqNotification open type="neutral">Neutral</BqNotification>
+      <BqNotification open type="success">Success</BqNotification>
+      <BqNotification open type="warning">Warning</BqNotification>
     </template>
     ```
   </CodeGroup>
@@ -1052,76 +381,73 @@ Use `type="warning"` to highlight potential issues or items that require attenti
 
 ### Custom icon
 
-Use the `icon` slot to replace the default type icon with a custom `bq-icon`. You can also use the `color` attribute on `bq-icon` to match your application's branding.
+Use the `icon` slot to replace the default type icon with a custom `bq-icon`.
 
 <CodeLivePreview
   code={`
   <style>
-    .notification--custom-icon {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
+    @scope {
+      :scope {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: var(--bq-spacing-m) !important;
+      }
 
-    .notification--custom-icon .footer-btns {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      .footer-btns {
+        display: flex;
+        gap: var(--bq-spacing-xs);
+      }
+
+      bq-notification[open] {
+        display: block;
+      }
     }
   </style>
 
-  <div class="notification--custom-icon">
-    <bq-notification open type="info">
-      <bq-icon name="thumbs-up" slot="icon"></bq-icon>
-      Title
-    </bq-notification>
+  <bq-notification open type="info">
+    <bq-icon name="thumbs-up" slot="icon"></bq-icon>
+    Title
+  </bq-notification>
 
-    <bq-notification open type="info">
-      <bq-icon name="thumbs-up" slot="icon"></bq-icon>
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-    </bq-notification>
+  <bq-notification open type="info">
+    <bq-icon name="thumbs-up" slot="icon"></bq-icon>
+    Title
+    <span slot="body">
+      This is some description text
+      <a class="bq-link" href="https://example.com">Link</a>
+    </span>
+  </bq-notification>
 
-    <bq-notification open type="info">
-      <bq-icon name="thumbs-up" slot="icon"></bq-icon>
-      Title
-      <span slot="body">
-        This is some description text
-        <a class="bq-link" href="https://example.com">Link</a>
-      </span>
-      <div class="footer-btns" slot="footer">
-        <bq-button size="small">Button</bq-button>
-        <bq-button appearance="link" size="small">Button</bq-button>
-      </div>
-    </bq-notification>
-  </div>
+  <bq-notification open type="info">
+    <bq-icon name="thumbs-up" slot="icon"></bq-icon>
+    Title
+    <span slot="body">
+      This is some description text
+      <a class="bq-link" href="https://example.com">Link</a>
+    </span>
+    <div class="footer-btns" slot="footer">
+      <bq-button size="small">Button</bq-button>
+      <bq-button appearance="link" size="small">Button</bq-button>
+    </div>
+  </bq-notification>
 
   <script>
-    (() => { // isolate scope for demo purposes
-      const notifications = Array.from(document.querySelectorAll('.notification--custom-icon bq-notification'));
+    (() => {
+      const root = document.currentScript?.closest('.preview') || document.currentScript?.parentElement;
+      if (!root) return;
+
+      const notifications = Array.from(root.querySelectorAll('bq-notification'));
       notifications.forEach((notification) => {
         notification.addEventListener('bqHide', () => {
-          setTimeout(() => { notification.open = true; }, 1500);
+          setTimeout(() => {
+            notification.show();
+          }, 1500);
         });
       });
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .notification--custom-icon {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-m);
-      padding: var(--bq-spacing-m);
-      width: 100%;
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-notification open type="info">
       <bq-icon name="thumbs-up" slot="icon"></bq-icon>
@@ -1151,52 +477,37 @@ Use the `icon` slot to replace the default type icon with a custom `bq-icon`. Yo
     </bq-notification>
     ```
 
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const notifications = Array.from(document.querySelectorAll('bq-notification'));
-    notifications.forEach((notification) => {
-      notification.addEventListener('bqHide', () => {
-        setTimeout(() => { notification.open = true; }, 1500);
-      });
-    });
-    ```
-
     ```jsx React icon="react"
     import { BqButton, BqIcon, BqNotification } from "@beeq/react";
 
-    export function CustomIconNotification() {
-      return (
-        <div className="notification--custom-icon">
-          <BqNotification open type="info">
-            <BqIcon name="thumbs-up" slot="icon" />
-            Title
-          </BqNotification>
+    <>
+      <BqNotification open type="info">
+        <BqIcon name="thumbs-up" slot="icon" />
+        Title
+      </BqNotification>
 
-          <BqNotification open type="info">
-            <BqIcon name="thumbs-up" slot="icon" />
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-          </BqNotification>
+      <BqNotification open type="info">
+        <BqIcon name="thumbs-up" slot="icon" />
+        Title
+        <span slot="body">
+          This is some description text{" "}
+          <a className="bq-link" href="https://example.com">Link</a>
+        </span>
+      </BqNotification>
 
-          <BqNotification open type="info">
-            <BqIcon name="thumbs-up" slot="icon" />
-            Title
-            <span slot="body">
-              This is some description text{" "}
-              <a className="bq-link" href="https://example.com">Link</a>
-            </span>
-            <div slot="footer">
-              <BqButton size="small">Button</BqButton>
-              <BqButton appearance="link" size="small">Button</BqButton>
-            </div>
-          </BqNotification>
+      <BqNotification open type="info">
+        <BqIcon name="thumbs-up" slot="icon" />
+        Title
+        <span slot="body">
+          This is some description text{" "}
+          <a className="bq-link" href="https://example.com">Link</a>
+        </span>
+        <div slot="footer">
+          <BqButton size="small">Button</BqButton>
+          <BqButton appearance="link" size="small">Button</BqButton>
         </div>
-      );
-    }
+      </BqNotification>
+    </>
     ```
 
     ```html Angular icon="angular"
@@ -1265,36 +576,68 @@ Use the `icon` slot to replace the default type icon with a custom `bq-icon`. Yo
   </CodeGroup>
 </CodeLivePreview>
 
-### Stacked (toast)
+### Stacked toast
 
 Use the `toast()` method to render notifications in a fixed-position portal that stacks multiple notifications vertically outside the normal document flow.
 
 <CodeLivePreview
   code={`
   <style>
-    .notification--stacked {
-      padding: var(--bq-spacing-m);
-    }
+    @scope {
+      :scope {
+        align-items: flex-start !important;
+      }
 
-    .notification--stacked p {
-      margin-bottom: var(--bq-spacing-s);
+      .notification--stacked {
+        display: flex;
+        flex-direction: column;
+        gap: var(--bq-spacing-s);
+      }
     }
   </style>
 
   <div class="notification--stacked">
-    <p>The notification portal is a fixed-position element that stacks multiple notifications vertically.</p>
+    <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
     <p>Only one portal exists at a time and it is added or removed from the DOM as needed.</p>
     <bq-button id="notification-stacked-btn">Open notification</bq-button>
   </div>
 
   <script>
-    (() => { // isolate scope for demo purposes
-      const NOTIFICATION_TYPE = ['error', 'info', 'neutral', 'success', 'warning'];
+    (() => {
+      const root = document.currentScript?.closest('.preview') || document.currentScript?.parentElement;
+      if (!root) return;
 
+      const styleId = 'notification-stacked-portal-style';
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = [
+          '.bq-notification-portal {',
+          '  position: fixed;',
+          '  inset-inline-end: 0;',
+          '  top: var(--bq-spacing-xxl3);',
+          '  z-index: 9999;',
+          '  max-height: 100%;',
+          '  max-width: 100%;',
+          '}',
+          '',
+          '.bq-notification-portal bq-notification {',
+          '  margin: 16px;',
+          '  display: block;',
+          '}',
+        ].join('\\n');
+        document.head.append(style);
+      }
+
+      const NOTIFICATION_TYPE = ['error', 'info', 'neutral', 'success', 'warning'];
       const getRandomType = () => NOTIFICATION_TYPE[Math.floor(Math.random() * NOTIFICATION_TYPE.length)];
 
-      const openBtn = document.getElementById('notification-stacked-btn');
-      openBtn.addEventListener('bqClick', () => {
+      const openBtn = root.querySelector('#notification-stacked-btn');
+      if (!openBtn) return;
+
+      const handleOpen = async () => {
+        await customElements.whenDefined('bq-notification');
+
         const type = getRandomType();
         const notification = Object.assign(document.createElement('bq-notification'), {
           type,
@@ -1307,80 +650,30 @@ Use the `toast()` method to render notifications in a fixed-position portal that
             </span>
           \`,
         });
-        document.body.append(notification);
-        notification.toast();
-      });
-    })();
-  </script>`}
->
-  <CodeGroup>
-    ```css CSS icon="css"
-    .notification--stacked {
-      padding: var(--bq-spacing-m);
-    }
-    ```
 
-    ```html HTML icon="html5"
-    <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
-    <bq-button id="open-toast-btn">Open notification</bq-button>
-    ```
-
-    ```js JavaScript icon="js"
-    import "./styles";
-
-    const NOTIFICATION_TYPE = ['error', 'info', 'neutral', 'success', 'warning'];
-
-    const getRandomType = () => NOTIFICATION_TYPE[Math.floor(Math.random() * NOTIFICATION_TYPE.length)];
-
-    const openBtn = document.querySelector('bq-button');
-    openBtn.addEventListener('bqClick', () => {
-      const type = getRandomType();
-      const notification = Object.assign(document.createElement('bq-notification'), {
-        type,
-        autoDismiss: true,
-        innerHTML: `
-          Title
-          <span slot="body">
-            Here goes the description for the <strong>${type} notification</strong><br />
-            You can also add a <a class="bq-link" href="https://example.com">Link</a>
-          </span>
-        `,
-      });
-      document.body.append(notification);
-      notification.toast();
-    });
-    ```
-
-    ```jsx React icon="react"
-    import { useRef } from "react";
-    import { BqButton } from "@beeq/react";
-
-    const NOTIFICATION_TYPE = ['error', 'info', 'neutral', 'success', 'warning'] as const;
-
-    export function StackedNotification() {
-      const handleOpenToast = () => {
-        const type = NOTIFICATION_TYPE[Math.floor(Math.random() * NOTIFICATION_TYPE.length)];
-        const notification = Object.assign(document.createElement('bq-notification'), {
-          type,
-          autoDismiss: true,
-          innerHTML: `
-            Title
-            <span slot="body">
-              Here goes the description for the <strong>${type} notification</strong>
-            </span>
-          `,
-        });
         document.body.append(notification);
         notification.toast();
       };
 
-      return (
-        <>
-          <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
-          <BqButton onBqClick={handleOpenToast}>Open notification</BqButton>
-        </>
-      );
-    }
+      openBtn.addEventListener('bqClick', handleOpen);
+    })();
+  </script>`}
+>
+  <CodeGroup>
+    ```html HTML icon="html5"
+    <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
+    <p>Only one portal exists at a time and it is added or removed from the DOM as needed.</p>
+    <bq-button id="notification-stacked-btn">Open notification</bq-button>
+    ```
+
+    ```jsx React icon="react"
+    import { BqButton } from "@beeq/react";
+
+    <>
+      <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
+      <p>Only one portal exists at a time and it is added or removed from the DOM as needed.</p>
+      <BqButton id="notification-stacked-btn">Open notification</BqButton>
+    </>
     ```
 
     ```html Angular icon="angular"
@@ -1388,55 +681,19 @@ Use the `toast()` method to render notifications in a fixed-position portal that
     <!-- Modules: components are available after importing BeeQModule -->
 
     <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
+    <p>Only one portal exists at a time and it is added or removed from the DOM as needed.</p>
     <bq-button (bqClick)="openToast()">Open notification</bq-button>
-    ```
-
-    ```ts Angular (ts) icon="angular"
-    const NOTIFICATION_TYPE = ['error', 'info', 'neutral', 'success', 'warning'] as const;
-
-    openToast(): void {
-      const type = NOTIFICATION_TYPE[Math.floor(Math.random() * NOTIFICATION_TYPE.length)];
-      const notification = Object.assign(document.createElement('bq-notification'), {
-        type,
-        autoDismiss: true,
-        innerHTML: `
-          Title
-          <span slot="body">
-            Here goes the description for the <strong>${type} notification</strong>
-          </span>
-        `,
-      });
-      document.body.append(notification);
-      (notification as any).toast();
-    }
     ```
 
     ```vue Vue icon="vuejs"
     <script setup lang="ts">
     import { BqButton } from "@beeq/vue";
-
-    const NOTIFICATION_TYPE = ['error', 'info', 'neutral', 'success', 'warning'] as const;
-
-    const openToast = () => {
-      const type = NOTIFICATION_TYPE[Math.floor(Math.random() * NOTIFICATION_TYPE.length)];
-      const notification = Object.assign(document.createElement('bq-notification'), {
-        type,
-        autoDismiss: true,
-        innerHTML: `
-          Title
-          <span slot="body">
-            Here goes the description for the <strong>${type} notification</strong>
-          </span>
-        `,
-      });
-      document.body.append(notification);
-      (notification as any).toast();
-    };
     </script>
 
     <template>
       <p>The notification portal stacks multiple notifications vertically in a fixed position.</p>
-      <BqButton @bqClick="openToast">Open notification</BqButton>
+      <p>Only one portal exists at a time and it is added or removed from the DOM as needed.</p>
+      <BqButton id="notification-stacked-btn">Open notification</BqButton>
     </template>
     ```
   </CodeGroup>
@@ -1450,66 +707,65 @@ Use the `toast()` method to render notifications in a fixed-position portal that
       <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
       Do
     </span>
-    Position notifications at the edges of the screen to avoid blocking page content.
+    Position notifications at the edges of the screen so they do not block the main content.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
       Don't
     </span>
-    Do not position notifications in the centre of the screen where they cover content with an overlay.
+    Do not position notifications in the center of the screen where they compete with the main task.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
       Do
     </span>
-    Keep messages concise and direct — write in sentence case and lead with the most important information.
+    Keep messages concise and direct, and lead with the most important information.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
       Don't
     </span>
-    Do not use long descriptions in notifications — extended text reduces scanability and causes confusion.
+    Do not use long descriptions in notifications because they reduce scanability.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
       Do
     </span>
-    Use the correct `type` so the icon and color immediately communicate the severity of the message.
+    Use the correct `type` so the icon and visual treatment reinforce the message severity.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
       Don't
     </span>
-    Do not use brand colors for notification states — this creates ambiguity about the importance of the required action.
+    Do not rely on custom colors or ambiguous language to communicate urgency.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
       Do
     </span>
-    Always include a close button or set `auto-dismiss` with a reasonable timeout so users can dismiss the notification.
+    Provide a close button or a thoughtful auto-dismiss timeout so users can dismiss notifications predictably.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
       Don't
     </span>
-    Do not use all-caps or title case — write in sentence case and avoid typographic emphasis that dilutes meaning.
+    Do not use all-caps or unnecessary typographic emphasis in notification copy.
   </Card>
 </CardGroup>
 
 ## Accessibility
 
-- **Color alone is not enough** — the `type` icon and the message text together communicate the severity. Always include a descriptive title so users who cannot perceive color still understand the message.
-- **Descriptive icons** — for the close button and any non-decorative icon in the `icon` slot, provide meaningful alternative text via the `bq-icon` `title` attribute.
-- **Keyboard access** — users must be able to tab through all interactive elements within a notification (close button, links, footer buttons) and activate them with <kbd>Enter</kbd> or <kbd>Space</kbd>.
-- **Auto-dismiss timing** — if `auto-dismiss` is used, set `time` to at least 8000ms to give users enough time to read the content. The notification should not dismiss while a user is hovering over it.
-- **Focus management** — when a stacked notification appears, focus should not move unexpectedly. Notifications are non-modal and should not steal focus from the current task.
+- **Color alone is not enough**: the icon and message text should work together so users who cannot perceive color still understand the notification.
+- **Keep interactive elements reachable**: users must be able to tab to the close button, links, and footer actions and activate them with the keyboard.
+- **Use considerate auto-dismiss timing**: if `auto-dismiss` is enabled, give users enough time to read the content before it disappears.
+- **Do not steal focus**: stacked notifications are non-modal and should not move focus unexpectedly away from the current task.
 
 ## API reference
 
@@ -1554,9 +810,9 @@ Use the `toast()` method to render notifications in a fixed-position portal that
 |---|---|
 | *(default)* | The notification title content |
 | `body` | The notification description content |
-| `footer` | The notification footer content (buttons, links) |
-| `icon` | Replaces the default type icon with a custom `bq-icon` |
 | `btn-close` | Replaces the default close button content |
+| `footer` | The notification footer content |
+| `icon` | Replaces the default type icon with a custom `bq-icon` |
 
 ### Shadow parts
 
@@ -1565,11 +821,11 @@ Use the `toast()` method to render notifications in a fixed-position portal that
 | `base` | The `<div>` container of the predefined `bq-icon` |
 | `body` | The `<div>` wrapping the notification description content |
 | `btn-close` | The `bq-button` used to close the notification |
-| `content` | The `<div>` wrapping all notification content (title, body, footer) |
+| `content` | The `<div>` wrapping all notification content |
 | `footer` | The `<div>` wrapping the notification footer content |
 | `icon` | The `<bq-icon>` element rendered based on the notification type |
 | `icon-outline` | The `<div>` wrapping the icon element |
-| `main` | The `<div>` wrapping the notification's main content (title, body) |
+| `main` | The `<div>` wrapping the notification main content |
 | `svg` | The `<svg>` element of the predefined `bq-icon` |
 | `title` | The `<div>` wrapping the notification title content |
 | `wrapper` | The outermost wrapper `<div>` inside the shadow DOM |
@@ -1580,29 +836,29 @@ Use the `toast()` method to render notifications in a fixed-position portal that
   | Variable | Description | Default |
   |---|---|---|
   | `--bq-notification--background` | Notification background color | `theme('colors.ui.primary')` |
-  | `--bq-notification--box-shadow` | Notification box shadow | `theme('boxShadow.l')` |
   | `--bq-notification--border-color` | Notification border color | `theme('colors.transparent')` |
   | `--bq-notification--border-radius` | Notification border radius | `theme('borderRadius.s')` |
   | `--bq-notification--border-style` | Notification border style | `none` |
   | `--bq-notification--border-width` | Notification border width | `unset` |
-  | `--bq-notification--content-footer-gap` | Gap between the content and footer | `theme('spacing.m')` |
-  | `--bq-notification--title-body-gap` | Gap between the title and body | `theme('spacing.s')` |
+  | `--bq-notification--box-shadow` | Notification box shadow | `theme('boxShadow.l')` |
+  | `--bq-notification--content-footer-gap` | Gap between content and footer | `theme('spacing.m')` |
   | `--bq-notification--icon-color-error` | Icon color for error notifications | `theme('colors.icon.danger')` |
   | `--bq-notification--icon-color-info` | Icon color for info notifications | `theme('colors.icon.brand')` |
   | `--bq-notification--icon-color-neutral` | Icon color for neutral notifications | `theme('colors.icon.primary')` |
   | `--bq-notification--icon-color-success` | Icon color for success notifications | `theme('colors.icon.success')` |
   | `--bq-notification--icon-color-warning` | Icon color for warning notifications | `theme('colors.icon.warning')` |
-  | `--bq-notification--padding` | Notification padding | `theme('padding.m')` |
   | `--bq-notification--min-width` | Minimum notification width | `320px` |
+  | `--bq-notification--padding` | Notification padding | `theme('padding.m')` |
+  | `--bq-notification--title-body-gap` | Gap between title and body | `theme('spacing.s')` |
 </Expandable>
 
 ## Resources
 
 <CardGroup cols={2}>
   <Card horizontal title="Interactive playground" icon="code" href="https://storybook.beeq.design/?path=/story/components-notification--default">
-    Explore all notification types and states in the live Storybook playground.
+    Explore all notification types and states in the Storybook playground.
   </Card>
   <Card horizontal title="Source code" icon="github" href="https://github.com/Endava/BEEQ/tree/main/packages/beeq/src/components/notification">
-    Browse the full source code, including the component implementation, tests, and styles.
+    Browse the full source code, including implementation, tests, and styles.
   </Card>
 </CardGroup>
