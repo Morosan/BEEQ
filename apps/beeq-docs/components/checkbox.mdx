@@ -3,6 +3,7 @@ title: Checkbox
 description: "Checkboxes let people select one or more independent options, or confirm a single yes-or-no choice."
 ---
 
+import { CardTile } from "/snippets/CardTile.jsx";
 import { CodeLivePreview } from "/snippets/CodeLivePreview.jsx";
 
 <Frame className="px-4 py-4" caption="Checkbox component overview">
@@ -39,39 +40,84 @@ Checkboxes help people make independent selections, confirm agreement, or contro
   </Card>
 </CardGroup>
 
-## Checkbox patterns
+## Patterns
 
 <CardGroup cols={2}>
-  <Card title="Single checkbox">
-    Use a single checkbox for an independent yes-or-no choice, such as subscribing to updates or accepting terms.
-  </Card>
-  <Card title="Checkbox group">
-    Use a group when several related options can be selected together and none of them are mutually exclusive.
-  </Card>
-  <Card title="Nested selection">
-    Use a parent checkbox when one control should affect a related set of child checkboxes.
-  </Card>
-  <Card title="Indeterminate state">
-    Use the indeterminate state when a parent checkbox represents a partially selected group.
-  </Card>
+  <CardTile
+    title="Single"
+    imageLightSrc="/components/images/checkbox/checkbox-pattern-single-light.svg"
+    imageDarkSrc="/components/images/checkbox/checkbox-pattern-single-dark.svg"
+  >
+    Use a single checkbox for one independent yes-or-no decision, such as subscribing to updates or accepting terms.
+  </CardTile>
+  <CardTile
+    title="Group"
+    imageLightSrc="/components/images/checkbox/checkbox-pattern-group-light.svg"
+    imageDarkSrc="/components/images/checkbox/checkbox-pattern-group-dark.svg"
+  >
+    Use a checkbox group when several related options can be selected together and none of them are mutually exclusive.
+  </CardTile>
+  <CardTile
+    title="Nesting"
+    imageLightSrc="/components/images/checkbox/checkbox-pattern-nesting-light.svg"
+    imageDarkSrc="/components/images/checkbox/checkbox-pattern-nesting-dark.svg"
+  >
+    Use a parent checkbox when one control should select or clear a related set of child checkboxes.
+  </CardTile>
+  <CardTile
+    title="Indeterminate state"
+    imageLightSrc="/components/images/checkbox/checkbox-pattern-indeterminate-light.svg"
+    imageDarkSrc="/components/images/checkbox/checkbox-pattern-indeterminate-dark.svg"
+  >
+    Use the indeterminate state when a parent checkbox needs to show that only some child options are selected.
+  </CardTile>
 </CardGroup>
 
 ## Anatomy
 
-<Frame className="px-4 py-4" caption="Checkbox component overview">
-  <img className="block dark:hidden" src="/components/images/checkbox/checkbox-overview-light.svg" alt="BEEQ Checkbox component overview" />
-  <img className="hidden dark:block" src="/components/images/checkbox/checkbox-overview-dark.svg" alt="BEEQ Checkbox component overview" />
+<Frame className="px-4 py-4" caption="Checkbox component anatomy">
+  <img className="block dark:hidden" src="/components/images/checkbox/checkbox-anatomy-light.svg" alt="BEEQ Checkbox component anatomy" />
+  <img className="hidden dark:block" src="/components/images/checkbox/checkbox-anatomy-dark.svg" alt="BEEQ Checkbox component anatomy" />
 </Frame>
 
-A checkbox is composed of the control itself and a visible text label. In grouped scenarios, a checkbox may also participate in a larger fieldset or parent-child relationship.
+A checkbox is composed of a visible label and a square control that can appear unselected, selected, or indeterminate depending on the current state.
 
 | Part | Element | Description |
 |---|---|---|
-| **1** | Control | The square selection indicator people toggle on or off |
-| **2** | Check or indeterminate mark | The visual state shown when the checkbox is selected or partially selected |
-| **3** | Label | The text that explains what the checkbox controls |
+| **1** | Label | The text that explains the option or setting and makes the checked state understandable |
+| **2** | Checkbox: default | The square control in its unchecked state before selection |
+| **3** | Checkbox: active | The selected or indeterminate state that confirms the option is enabled or partially selected |
 
-## Common usage patterns
+## Design guidelines
+
+Use checkbox labels and grouping patterns that make the selected state easy to understand before people interact with the control.
+
+<CardGroup cols={2}>
+  <CardTile title="Write labels as outcomes">
+    Write the label so the checked state reads like a clear statement, especially in settings and consent flows.
+  </CardTile>
+  <CardTile title="Make hierarchy obvious">
+    When a parent checkbox controls child options, make the relationship visually clear and keep the parent state synchronized.
+  </CardTile>
+</CardGroup>
+
+<Steps>
+  <Step title="Start with the key meaning">
+    Put the important words at the beginning of the label so people can scan the list quickly.
+  </Step>
+  <Step title="Group related choices">
+    Use a shared heading or fieldset when several checkboxes belong to one decision or category.
+  </Step>
+  <Step title="Use indeterminate as a summary">
+    Reserve the indeterminate state for parent checkboxes that represent a partially selected group.
+  </Step>
+</Steps>
+
+<Note>
+  If users must choose exactly one option, use [Radio](/components/radio) instead of adapting a checkbox pattern to a single-select task.
+</Note>
+
+## Usage
 
 ### Default
 
@@ -129,9 +175,11 @@ Use a longer label when people need more context before deciding, but keep the c
 <CodeLivePreview
   code={`
   <style>
-    .checkbox-long {
-      width: 100%;
-      max-width: 22rem;
+    @scope {
+      .checkbox-long {
+        width: 100%;
+        max-width: 22rem;
+      }
     }
   </style>
   <bq-checkbox class="checkbox-long" name="terms" value="terms">
@@ -177,8 +225,10 @@ Use a longer label when people need more context before deciding, but keep the c
       </BqCheckbox>
     </template>
     ```
-  </CodeGroup>
+</CodeGroup>
 </CodeLivePreview>
+
+## Options
 
 ### Background on hover
 
@@ -214,7 +264,7 @@ Use `background-on-hover` when the surrounding layout benefits from a larger per
     </script>
 
     <template>
-      <BqCheckbox name="notifications" value="notifications" background-on-hover>
+      <BqCheckbox name="notifications" value="notifications" backgroundOnHover>
         Email me about account activity
       </BqCheckbox>
     </template>
@@ -288,19 +338,21 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
 <CodeLivePreview
   code={`
   <style>
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-s);
-      width: 100%;
-      max-width: 22rem;
-    }
+    @scope {
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--bq-spacing-s);
+        width: 100%;
+        max-width: 22rem;
+      }
 
-    .checkbox-group__children {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-xs2);
-      margin-inline-start: 1.5rem;
+      .checkbox-group__children {
+        display: flex;
+        flex-direction: column;
+        gap: var(--bq-spacing-xs2);
+        margin-inline-start: 1.5rem;
+      }
     }
   </style>
 
@@ -595,7 +647,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     <template>
       <div class="checkbox-group">
         <BqCheckbox
-          background-on-hover
+          backgroundOnHover
           :checked="allChecked"
           :indeterminate="isIndeterminate"
           name="all-interests"
@@ -607,7 +659,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
 
         <div class="checkbox-group__children">
           <BqCheckbox
-            background-on-hover
+            backgroundOnHover
             :checked="interests.music"
             name="interest"
             value="music"
@@ -616,7 +668,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
             Music
           </BqCheckbox>
           <BqCheckbox
-            background-on-hover
+            backgroundOnHover
             :checked="interests.travel"
             name="interest"
             value="travel"
@@ -625,7 +677,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
             Travel
           </BqCheckbox>
           <BqCheckbox
-            background-on-hover
+            backgroundOnHover
             :checked="interests.sport"
             name="interest"
             value="sport"
@@ -689,15 +741,30 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     </span>
     Do not rely on unchecked-by-default choices to imply consent when legal or high-stakes confirmation is required.
   </Card>
+  <Card>
+    <span className="flex items-center mr-2 text-lg font-medium" role="heading">
+      <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
+      Do
+    </span>
+    Use the indeterminate state only when it accurately summarizes a partially selected group of child options.
+  </Card>
+  <Card>
+    <span className="flex items-center mr-2 text-lg font-medium" role="heading">
+      <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
+      Don't
+    </span>
+    Do not present indeterminate as a standalone third choice, because it is only meaningful as a group summary.
+  </Card>
 </CardGroup>
 
 ## Accessibility
 
-- **Associate each checkbox with a visible label** — the text should explain the effect of the selected state without requiring extra context.
-- **Group related choices semantically** — when multiple checkboxes form a set, provide a shared heading or fieldset label.
-- **Preserve keyboard support** — people should be able to tab to each checkbox and toggle it with <kbd>Space</kbd>.
+- **Built-in native checkbox semantics** — the component uses a native `<input type="checkbox">`, so checked, unchecked, disabled, and required states follow standard browser and assistive technology behavior.
+- **Built-in label association** — the internal input and the slotted text are wrapped in the same `<label>`, so clicking the label toggles the checkbox without extra wiring.
+- **Built-in focus support** — the shadow root delegates focus to the native input, and the component emits `bqFocus` and `bqBlur` when that input gains or loses focus.
+- **Group related choices semantically** — when multiple checkboxes form a set, provide a shared heading or a `<fieldset>` with an accessible label.
 - **Use indeterminate carefully** — it should summarize a partial group selection, not replace clear child options.
-- **Do not rely on color alone** — the checked mark, focus state, and label text should all help communicate meaning.
+- **Do not rely on color alone** — the checked mark, focus treatment, and label text should all help communicate meaning.
 
 ## API reference
 
@@ -731,6 +798,12 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
 | `vClick()` | Simulates a click on the native input element | `Promise<void>` |
 | `vFocus()` | Sets focus on the native input element | `Promise<void>` |
 
+### Slots
+
+| Slot | Description |
+|---|---|
+| `default` | The visible label content for the checkbox |
+
 ### Shadow parts
 
 | Part | Description |
@@ -750,6 +823,10 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
   | `--bq-checkbox--border-radius` | Checkbox border radius | `theme('borderRadius.xs')` |
   | `--bq-checkbox--border-width` | Checkbox border width | `theme('borderWidth.m')` |
 </Expandable>
+
+<Tip>
+  Learn more about [styling with shadow parts](/theming/styles) and [CSS custom properties](/theming/global-css-variables).
+</Tip>
 
 ## Resources
 
