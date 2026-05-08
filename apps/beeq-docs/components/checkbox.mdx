@@ -174,26 +174,11 @@ Use a longer label when people need more context before deciding, but keep the c
 
 <CodeLivePreview
   code={`
-  <style>
-    @scope {
-      .checkbox-long {
-        width: 100%;
-        max-width: 22rem;
-      }
-    }
-  </style>
   <bq-checkbox class="checkbox-long" name="terms" value="terms">
     By clicking here, I state that I have read and understood the terms and conditions.
   </bq-checkbox>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .checkbox-long {
-      width: 100%;
-      max-width: 22rem;
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-checkbox class="checkbox-long" name="terms" value="terms">
       By clicking here, I state that I have read and understood the terms and conditions.
@@ -339,14 +324,6 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
   code={`
   <style>
     @scope {
-      .checkbox-group {
-        display: flex;
-        flex-direction: column;
-        gap: var(--bq-spacing-s);
-        width: 100%;
-        max-width: 22rem;
-      }
-
       .checkbox-group__children {
         display: flex;
         flex-direction: column;
@@ -356,7 +333,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     }
   </style>
 
-  <div class="checkbox-group" id="interests-group">
+  <div>
     <bq-checkbox name="all-interests" value="all" background-on-hover>
       Interests
     </bq-checkbox>
@@ -381,7 +358,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
       await customElements.whenDefined('bq-checkbox');
 
       const previewRoot = currentScript?.closest('.preview');
-      const checkboxGroup = previewRoot?.querySelector('#interests-group');
+      const checkboxGroup = previewRoot?.querySelector('div');
       const allInterestCheckbox = checkboxGroup?.querySelector('bq-checkbox[name="all-interests"]');
       const interestCheckboxes = Array.from(checkboxGroup?.querySelectorAll('bq-checkbox[name="interest"]') ?? []);
 
@@ -418,14 +395,6 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
 >
   <CodeGroup>
     ```css CSS icon="css"
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: var(--bq-spacing-s);
-      width: 100%;
-      max-width: 22rem;
-    }
-
     .checkbox-group__children {
       display: flex;
       flex-direction: column;
@@ -435,7 +404,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     ```
 
     ```html HTML icon="html5"
-    <div class="checkbox-group" id="interests-group">
+    <div>
       <bq-checkbox name="all-interests" value="all" background-on-hover>
         Interests
       </bq-checkbox>
@@ -457,7 +426,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     ```js JavaScript icon="js" expandable
     const allCheckboxChange = (event) => {
       const interestCheckboxes = Array.from(
-        document.querySelectorAll('#interests-group bq-checkbox[name="interest"]'),
+        document.querySelectorAll('bq-checkbox[name="interest"]'),
       );
 
       interestCheckboxes.forEach((interestCheckbox) => {
@@ -466,16 +435,12 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     };
 
     const interestCheckboxChange = () => {
-      const allInterestCheckbox = document.querySelector(
-        '#interests-group bq-checkbox[name="all-interests"]',
-      );
+      const allInterestCheckbox = document.querySelector('bq-checkbox[name="all-interests"]');
       if (!allInterestCheckbox) return;
 
-      const interestCheckboxes = document.querySelectorAll(
-        '#interests-group bq-checkbox[name="interest"]',
-      );
+      const interestCheckboxes = document.querySelectorAll('bq-checkbox[name="interest"]');
       const onlyChecked = document.querySelectorAll(
-        '#interests-group bq-checkbox[name="interest"][checked]',
+        'bq-checkbox[name="interest"][checked]',
       ).length;
 
       allInterestCheckbox.indeterminate =
@@ -483,11 +448,9 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
       allInterestCheckbox.checked = onlyChecked === interestCheckboxes.length;
     };
 
-    const allInterestCheckbox = document.querySelector(
-      '#interests-group bq-checkbox[name="all-interests"]',
-    );
+    const allInterestCheckbox = document.querySelector('bq-checkbox[name="all-interests"]');
     const interestCheckboxes = Array.from(
-      document.querySelectorAll('#interests-group bq-checkbox[name="interest"]'),
+      document.querySelectorAll('bq-checkbox[name="interest"]'),
     );
 
     allInterestCheckbox?.addEventListener('bqChange', allCheckboxChange);
@@ -522,7 +485,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
       };
 
       return (
-        <div className="checkbox-group">
+        <div>
           <BqCheckbox
             backgroundOnHover
             checked={allChecked}
@@ -578,7 +541,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     <!-- Standalone: import { BqCheckbox } from "@beeq/angular/standalone" -->
     <!-- Modules: components are available after importing BeeQModule -->
 
-    <div class="checkbox-group">
+    <div>
       <bq-checkbox
         background-on-hover
         [checked]="music && travel && sport"
@@ -645,7 +608,7 @@ Use the indeterminate state when a parent checkbox controls a related set of chi
     </script>
 
     <template>
-      <div class="checkbox-group">
+      <div>
         <BqCheckbox
           backgroundOnHover
           :checked="allChecked"
