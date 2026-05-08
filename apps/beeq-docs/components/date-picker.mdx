@@ -973,16 +973,6 @@ Use `isDateDisallowed` to make specific dates unavailable for selection. This is
     </bq-date-picker>
     ```
 
-    ```js JavaScript icon="js"
-    const datePickerElem = document.querySelector('bq-date-picker[name="disallowed-dates"]');
-    const disallowedDates = ['2026-12-01', '2026-12-25', '2026-12-26'];
-
-    datePickerElem.isDateDisallowed = (date) => {
-      const dateString = date.toLocaleDateString('fr-CA');
-      return disallowedDates.includes(dateString);
-    };
-    ```
-
     ```jsx React icon="react"
     import { BqDatePicker } from "@beeq/react";
 
@@ -1043,6 +1033,16 @@ Use `isDateDisallowed` to make specific dates unavailable for selection. This is
       </BqDatePicker>
     </template>
     ```
+
+    ```js JavaScript icon="js"
+    const datePickerElem = document.querySelector('bq-date-picker[name="disallowed-dates"]');
+    const disallowedDates = ['2026-12-01', '2026-12-25', '2026-12-26'];
+
+    datePickerElem.isDateDisallowed = (date) => {
+      const dateString = date.toLocaleDateString('fr-CA');
+      return disallowedDates.includes(dateString);
+    };
+    ```
   </CodeGroup>
 </CodeLivePreview>
 
@@ -1099,17 +1099,6 @@ Use `formatOptions` when the selected date needs a more descriptive text format 
     >
       <label class="flex flex-grow items-center" slot="label">Meeting date</label>
     </bq-date-picker>
-    ```
-
-    ```js JavaScript icon="js"
-    const datePickerElem = document.querySelector('bq-date-picker[name="formatted-date"]');
-
-    datePickerElem.formatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
     ```
 
     ```jsx React icon="react"
@@ -1174,6 +1163,17 @@ Use `formatOptions` when the selected date needs a more descriptive text format 
         <label class="flex flex-grow items-center" slot="label">Meeting date</label>
       </BqDatePicker>
     </template>
+    ```
+
+    ```js JavaScript icon="js"
+    const datePickerElem = document.querySelector('bq-date-picker[name="formatted-date"]');
+
+    datePickerElem.formatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
     ```
   </CodeGroup>
 </CodeLivePreview>
@@ -1242,11 +1242,14 @@ Use `formatOptions` when the selected date needs a more descriptive text format 
 
 ## Accessibility
 
-- `bq-date-picker` is form-associated and delegates focus, so it participates in native forms and moves focus into the input control when the component receives focus.
-- The component emits `bqFocus`, `bqBlur`, `bqChange`, and `bqClear`, which gives you the hooks needed to announce validation, react to changes, and keep form state synchronized.
-- Always provide a visible label through the `label` slot or an equivalent accessible name so assistive technologies can identify the purpose of the field.
-- Selected, disabled, warning, and error states should never rely on color alone. Pair validation styling with clear text feedback and task-specific messages.
-- Keep locale, first-day-of-week, and display formatting aligned with user expectations so typed input and visible values remain understandable.
+- `bq-date-picker` is form-associated and delegates focus, so it participates in native forms and moves focus into the internal `<input>` element when the component receives focus.
+- The input element sets `aria-disabled="true"` when `disabled` is `true`, and `aria-invalid="true"` when `validationStatus` is `"error"`.
+- The input uses `aria-haspopup="dialog"` and `aria-controls` to announce the calendar panel to assistive technologies, and `aria-describedby` to associate the visible label with the control when a `label` slot is provided.
+- The calendar panel carries `role="dialog"` and `aria-modal="true"`, and is labelled via `aria-labelledby` matching the label slot — keeping the panel context announced correctly to screen reader users.
+- The component emits `bqFocus`, `bqBlur`, `bqChange`, and `bqClear`, which give you the hooks needed to announce validation results, react to changes, and keep form state synchronized.
+- Always provide a visible label through the `label` slot. Without it, `aria-describedby` on the input has no target and the field loses its accessible name.
+- Validation states should never rely on color alone. Pair `validationStatus` with visible error text so screen reader users receive the same feedback as sighted users.
+- Keep `locale`, `first-day-of-week`, and display formatting aligned with user expectations so typed input and visible values remain understandable for all users.
 
 ## API reference
 
@@ -1254,7 +1257,7 @@ Use `formatOptions` when the selected date needs a more descriptive text format 
 
 | Property | Attribute | Description | Type | Default |
 |---|---|---|---|---|
-| `autofocus` | `autofocus` | If `true`, the input is focused on component render | `boolean` | `false` |
+| `autofocus` | `autofocus` | If `true`, the input is focused on component render | `boolean` | `undefined` |
 | `clearButtonLabel` | `clear-button-label` | Accessible label for the clear button | `string` | `"Clear value"` |
 | `disableClear` | `disable-clear` | If `true`, the clear button is hidden | `boolean` | `false` |
 | `disabled` | `disabled` | Disables the date picker | `boolean` | `false` |
@@ -1318,6 +1321,7 @@ Use `formatOptions` when the selected date needs a more descriptive text format 
 | Part | Description |
 |---|---|
 | `base` | Base wrapper for the component |
+| `button` | Native HTML `<button>` element used inside the clear button |
 | `control` | Input control wrapper |
 | `input` | Native text input used under the hood |
 | `label` | Label slot container |
@@ -1349,13 +1353,13 @@ Use `formatOptions` when the selected date needs a more descriptive text format 
 
 ### CSS custom properties
 
-<Expandable title="View all CSS variables" defaultOpen={false}>
+<Expandable title="CSS variables" defaultOpen={false}>
   | Variable | Description | Default |
   |---|---|---|
   | `--bq-date-picker--background-color` | Background color | `theme(backgroundColor.ui.primary)` |
   | `--bq-date-picker--border-color` | Border color | `theme(stroke.tertiary)` |
-  | `--bq-date-picker--border-color-disabled` | Border color when disabled | *(defined in styles)* |
-  | `--bq-date-picker--border-color-focus` | Border color on focus | *(defined in styles)* |
+  | `--bq-date-picker--border-color-disabled` | Border color when disabled | Inherits `--bq-date-picker--border-color`; the control applies `opacity-60` |
+  | `--bq-date-picker--border-color-focus` | Border color on focus | `--bq-focus` (brand focus ring token) |
   | `--bq-date-picker--border-radius` | Border radius | `theme(borderRadius.s)` |
   | `--bq-date-picker--border-style` | Border style | `solid` |
   | `--bq-date-picker--border-width` | Border width | `theme(borderWidth.s)` |
