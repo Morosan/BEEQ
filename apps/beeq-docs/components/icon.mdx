@@ -3,6 +3,7 @@ title: Icon
 description: Icons provide compact visual cues that help people recognize actions, statuses, navigation, and meaning across an interface.
 ---
 
+import { CardTile } from "/snippets/CardTile.jsx";
 import { CodeLivePreview } from "/snippets/CodeLivePreview.jsx";
 
 <Frame className="px-4 py-4" caption="Icon component overview">
@@ -46,12 +47,12 @@ Icons help people scan and understand an interface faster. Use them to support a
 The icon guidance distinguishes between two common visual styles.
 
 <CardGroup cols={2}>
-  <Card title="Outlined">
+  <CardTile title="Outlined">
     Outlined icons work well for general-purpose UI because they feel lighter and reduce visual noise.
-  </Card>
-  <Card title="Filled">
+  </CardTile>
+  <CardTile title="Filled">
     Filled icons add emphasis and are useful for selected states, favorites, ratings, and other moments that need stronger visual weight.
-  </Card>
+  </CardTile>
 </CardGroup>
 
 ## Anatomy
@@ -61,12 +62,12 @@ The icon guidance distinguishes between two common visual styles.
   <img className="hidden dark:block" src="/components/images/icon/icon-anatomy-dark.svg" alt="BEEQ Icon component anatomy" />
 </Frame>
 
-`bq-icon` keeps its structure intentionally small so it can be reused inside many higher-level components. The host controls the icon name, size, color, and accessible label, while the shadow DOM renders the loaded SVG inside a single wrapper.
+`bq-icon` keeps its structure intentionally small so it can be reused inside many higher-level components. The icon graphic sits inside a defined bounding area that controls its rendered footprint and alignment.
 
 | Part | Element | Description |
 |---|---|---|
-| **1** | Base | The internal wrapper that holds the rendered icon |
-| **2** | SVG | The injected `<svg>` element used for the icon graphic |
+| **1** | Icon | The visible icon graphic that communicates the action, object, or concept |
+| **2** | Bounding area | The space that defines the icon footprint and keeps sizing and alignment consistent |
 
 ## Design guidelines
 
@@ -586,6 +587,10 @@ setBasePath("https://cdn.jsdelivr.net/npm/heroicons@2.1.5/24/outline");
   | `--bq-icon--color` | Icon color | `currentColor` |
   | `--bq-icon--size` | Icon size | `24px` |
 </Expandable>
+
+<Tip>
+  Learn more about [styling with shadow parts](/theming/styles) and [CSS custom properties](/theming/global-css-variables).
+</Tip>
 
 ## Resources
 
