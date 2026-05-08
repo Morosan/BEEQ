@@ -3,6 +3,7 @@ title: Dialog
 description: "Dialogs present focused content or decisions that temporarily interrupt the current flow until the user responds or dismisses them."
 ---
 
+import { CardTile } from "/snippets/CardTile.jsx";
 import { CodeLivePreview } from "/snippets/CodeLivePreview.jsx";
 
 <Frame className="px-4 py-4" caption="Dialog component overview">
@@ -39,24 +40,21 @@ Dialogs help people stay in context while responding to important information, c
   </Card>
 </CardGroup>
 
-## Dialog patterns
+## Patterns
 
 <CardGroup cols={2}>
-  <Card title="Default">
-    Use the default dialog when you want to overlay content for focused user engagement.
-  </Card>
-  <Card title="Highlight footer">
-    Use a highlighted footer when the actions or details at the bottom need extra emphasis.
-  </Card>
-  <Card title="No footer">
-    Omit the footer for simple informational content that does not need actions.
-  </Card>
-  <Card title="No backdrop">
-    Remove the backdrop only when the surrounding interface should remain visible.
-  </Card>
-  <Card title="Dialog confirm">
-    Use a confirmation dialog to make irreversible actions explicit before the user continues.
-  </Card>
+  <CardTile title="Ghost">
+    Use the standard dialog to present important information, gather input, or confirm actions in a temporary overlay.
+  </CardTile>
+  <CardTile title="Filled">
+    Use the fixed-bottom dialog when keeping the component anchored to the bottom of the screen supports a more predictable interaction.
+  </CardTile>
+  <CardTile title="Two buttons">
+    Use two actions when the dialog needs a clear primary decision alongside a secondary escape path such as cancel or dismiss.
+  </CardTile>
+  <CardTile title="Three buttons">
+    Use three actions only when users genuinely need a primary, secondary, and tertiary choice within the same decision flow.
+  </CardTile>
 </CardGroup>
 
 ## Anatomy
@@ -66,17 +64,55 @@ Dialogs help people stay in context while responding to important information, c
   <img className="hidden dark:block" src="/components/images/dialog/dialog-anatomy-dark.svg" alt="Dialog anatomy" />
 </Frame>
 
-A dialog is composed of a header, a content area, and optional footer actions.
+A dialog is composed of a container, a header with icon and title, a close control, a body area, and optional footer actions.
 
 | Part | Element | Description |
 |---|---|---|
-| **1** | Header | Contains the title and, by default, the close button |
-| **2** | Title | The primary text that explains the purpose of the dialog |
-| **3** | Body | The main content area for supporting text or controls |
-| **4** | Footer | Optional action area for buttons or links |
-| **5** | Close button | A dismiss action shown by default |
+| **1** | Container | The outer dialog surface that groups all content and actions |
+| **2** | Header: Icon | A contextual icon that helps communicate the nature of the dialog at a glance |
+| **3** | Header: Title | The primary heading that explains the purpose of the dialog |
+| **4** | Close | The dismiss control shown in the header when the close button is enabled |
+| **5** | Body (description) | The main content area for supporting text, guidance, or short task content |
+| **6** | Footer: CTA buttons | The action area for the dialog's primary and secondary decisions |
 
-## Common usage patterns
+## Design guidelines
+
+Use dialogs only when the interruption is worth the attention shift and the next step is clear.
+
+<CardGroup cols={2}>
+  <CardTile
+    title="Keep the title action-oriented"
+    imageLightSrc="/components/images/dialog/dialog-title-guidance-light.svg"
+    imageDarkSrc="/components/images/dialog/dialog-title-guidance-dark.svg"
+  >
+    Write titles that tell people what decision or task the dialog is about, not just that something happened.
+  </CardTile>
+  <CardTile
+    title="Limit the number of actions"
+    imageLightSrc="/components/images/dialog/dialog-actions-guidance-light.svg"
+    imageDarkSrc="/components/images/dialog/dialog-actions-guidance-dark.svg"
+  >
+    Keep the footer focused. One primary action and one secondary action is usually enough for quick decisions.
+  </CardTile>
+</CardGroup>
+
+<Steps>
+  <Step title="Choose the right level of interruption">
+    Use a dialog only when people must pause to confirm, review, or complete a short task before continuing.
+  </Step>
+  <Step title="Write clear actions">
+    Make button labels describe the outcome, especially in destructive or irreversible flows.
+  </Step>
+  <Step title="Use confirm dialogs carefully">
+    Reserve locked-down confirmation dialogs for actions that carry real risk, such as deletion or deactivation.
+  </Step>
+</Steps>
+
+<Note>
+  If the content grows beyond a short decision or focused task, move the interaction to an inline flow or a dedicated page instead of expanding the dialog.
+</Note>
+
+## Usage
 
 ### Default
 
@@ -86,83 +122,67 @@ Use the `default` dialog when you want to overlay content for focused user engag
   className="dialog-component"
   code={`
   <style>
-    .dialog--default {
-      padding: var(--bq-spacing-m);
-    }
+    @scope {
+      h5 {
+        display: flex;
+        font-weight: 700;
+        align-items: center;
+        gap: var(--bq-spacing-s);
+      }
 
-    .dialog--default h5 {
-      display: flex;
-      font-weight: 700;
-      align-items: center;
-      gap: var(--bq-spacing-s);
-    }
-
-    .dialog--default div {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      .dialog-footer {
+        display: flex;
+        gap: var(--bq-spacing-xs);
+      }
     }
   </style>
 
-  <div class="dialog--default">
-    <bq-button id="dialog-open-default">Open dialog</bq-button>
+  <bq-button>Open dialog</bq-button>
 
-    <bq-dialog id="dialog-default">
-      <h5 class="bold flex items-center gap-s" slot="title">
-        <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
-        Title
-      </h5>
+  <bq-dialog>
+    <h5 slot="title">
+      <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
+      Title
+    </h5>
 
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div class="flex gap-xs" slot="footer">
-        <bq-button appearance="link">Button</bq-button>
-        <bq-button variant="ghost">Button</bq-button>
-        <bq-button variant="standard">Button</bq-button>
-      </div>
-    </bq-dialog>
-  </div>
+    <div class="dialog-footer" slot="footer">
+      <bq-button appearance="link">Button</bq-button>
+      <bq-button variant="ghost">Button</bq-button>
+      <bq-button variant="standard">Button</bq-button>
+    </div>
+  </bq-dialog>
 
   <script>
-    (async () => {
-      const currentScript = document.currentScript;
+    (() => {
+      const preview = document.currentScript?.parentElement;
+      if (!preview) return;
 
-      await customElements.whenDefined('bq-dialog');
-
-      const previewRoot = currentScript?.closest('.preview');
-      const dialog = previewRoot?.querySelector('#dialog-default');
-      const openButton = previewRoot?.querySelector('#dialog-open-default');
-
+      const dialog = preview.querySelector('bq-dialog');
+      const openButton = preview.querySelector('bq-button');
       if (!dialog || !openButton) return;
 
-      await dialog.componentOnReady?.();
+      const getNativeDialog = () => dialog.shadowRoot?.querySelector('dialog');
+      const openPreviewDialog = () => {
+        const nativeDialog = getNativeDialog();
+        if (!nativeDialog?.showModal || nativeDialog.open) return;
 
-      openButton.addEventListener('bqClick', () => dialog.show());
+        dialog.classList.add('bq-dialog--open');
+        dialog.open = true;
+        nativeDialog.classList.remove('hidden');
+        nativeDialog.showModal();
+      };
+
+      openButton.addEventListener('bqClick', openPreviewDialog);
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .dialog--default {
-      padding: var(--bq-spacing-m);
-    }
-
-    .dialog--default h5 {
-      display: flex;
-      font-weight: 700;
-      align-items: center;
-      gap: var(--bq-spacing-s);
-    }
-
-    .dialog--default div {
-      display: flex;
-      gap: var(--bq-spacing-xs);
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-button>Open dialog</bq-button>
 
-    <bq-dialog open>
+    <bq-dialog>
       <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
@@ -170,7 +190,7 @@ Use the `default` dialog when you want to overlay content for focused user engag
 
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="link">Button</bq-button>
         <bq-button variant="ghost">Button</bq-button>
         <bq-button variant="standard">Button</bq-button>
@@ -179,8 +199,6 @@ Use the `default` dialog when you want to overlay content for focused user engag
     ```
 
     ```js JavaScript icon="js"
-    import "./styles";
-
     const openDialogBtn = document.querySelector("bq-button");
     const dialogElem = document.querySelector("bq-dialog");
 
@@ -201,14 +219,14 @@ Use the `default` dialog when you want to overlay content for focused user engag
           <BqButton onBqClick={() => dialogRef.current?.show()}>Open dialog</BqButton>
 
           <BqDialog ref={dialogRef}>
-            <h5 className="bold flex items-center gap-s" slot="title">
+            <h5 slot="title">
               <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
               Title
             </h5>
 
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-            <div className="flex gap-xs" slot="footer">
+            <div className="dialog-footer" slot="footer">
               <BqButton appearance="link">Button</BqButton>
               <BqButton variant="ghost">Button</BqButton>
               <BqButton variant="standard">Button</BqButton>
@@ -226,14 +244,14 @@ Use the `default` dialog when you want to overlay content for focused user engag
     <bq-button (bqClick)="myDialog.show()">Open dialog</bq-button>
 
     <bq-dialog #myDialog>
-      <h5 class="bold flex items-center gap-s" slot="title">
+      <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
       </h5>
 
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div class="flex gap-xs" slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="link">Button</bq-button>
         <bq-button variant="ghost">Button</bq-button>
         <bq-button variant="standard">Button</bq-button>
@@ -253,14 +271,14 @@ Use the `default` dialog when you want to overlay content for focused user engag
       <BqButton @bqClick="dialogRef?.show()">Open dialog</BqButton>
 
       <BqDialog ref="dialogRef">
-        <h5 class="bold flex items-center gap-s" slot="title">
+        <h5 slot="title">
           <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
           Title
         </h5>
 
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-        <div class="flex gap-xs" slot="footer">
+        <div class="dialog-footer" slot="footer">
           <BqButton appearance="link">Button</BqButton>
           <BqButton variant="ghost">Button</BqButton>
           <BqButton variant="standard">Button</BqButton>
@@ -275,6 +293,8 @@ Use the `default` dialog when you want to overlay content for focused user engag
   The dialog closes via its built-in close button (✕) or by clicking the backdrop. You can also control visibility programmatically with the `show()`, `hide()`, and `cancel()` methods, or use the `open` attribute for static snapshots.
 </Tip>
 
+## Options
+
 ### Highlight footer
 
 Use `footer-appearance="highlight"` when emphasis on the footer is important.
@@ -282,71 +302,67 @@ Use `footer-appearance="highlight"` when emphasis on the footer is important.
 <CodeLivePreview
   code={`
   <style>
-    .dialog--highlight {
-      padding: var(--bq-spacing-m);
-    }
+    @scope {
+      h5 {
+        display: flex;
+        font-weight: 700;
+        align-items: center;
+        gap: var(--bq-spacing-s);
+      }
 
-    .dialog--highlight h5 {
-      display: flex;
-      font-weight: 700;
-      align-items: center;
-      gap: var(--bq-spacing-s);
-    }
-
-    .dialog--highlight div {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      .dialog-footer {
+        display: flex;
+        gap: var(--bq-spacing-xs);
+      }
     }
   </style>
 
-  <div class="dialog--highlight">
-    <bq-button id="dialog-open-highlight">Open dialog</bq-button>
+  <bq-button>Open dialog</bq-button>
 
-    <bq-dialog id="dialog-highlight" footer-appearance="highlight">
-      <h5 class="bold flex items-center gap-s" slot="title">
-        <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
-        Title
-      </h5>
+  <bq-dialog footer-appearance="highlight">
+    <h5 class="bold flex items-center gap-s" slot="title">
+      <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
+      Title
+    </h5>
 
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div class="flex gap-xs" slot="footer">
-        <bq-button appearance="link">Button</bq-button>
-        <bq-button variant="ghost">Button</bq-button>
-        <bq-button variant="standard">Button</bq-button>
-      </div>
-    </bq-dialog>
-  </div>
+    <div class="dialog-footer" slot="footer">
+      <bq-button appearance="link">Button</bq-button>
+      <bq-button variant="ghost">Button</bq-button>
+      <bq-button variant="standard">Button</bq-button>
+    </div>
+  </bq-dialog>
 
   <script>
-    (async () => {
-      const currentScript = document.currentScript;
+    (() => {
+      const preview = document.currentScript?.parentElement;
+      if (!preview) return;
 
-      await customElements.whenDefined('bq-dialog');
-
-      const previewRoot = currentScript?.closest('.preview');
-      const dialog = previewRoot?.querySelector('#dialog-highlight');
-      const openButton = previewRoot?.querySelector('#dialog-open-highlight');
-
+      const dialog = preview.querySelector('bq-dialog');
+      const openButton = preview.querySelector('bq-button');
       if (!dialog || !openButton) return;
 
-      await dialog.componentOnReady?.();
+      const getNativeDialog = () => dialog.shadowRoot?.querySelector('dialog');
+      const openPreviewDialog = () => {
+        const nativeDialog = getNativeDialog();
+        if (!nativeDialog?.showModal || nativeDialog.open) return;
 
-      openButton.addEventListener('bqClick', () => dialog.show());
+        dialog.classList.add('bq-dialog--open');
+        dialog.open = true;
+        nativeDialog.classList.remove('hidden');
+        nativeDialog.showModal();
+      };
+
+      openButton.addEventListener('bqClick', openPreviewDialog);
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .dialog--highlight {
-      padding: var(--bq-spacing-m);
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-button>Open dialog</bq-button>
 
-    <bq-dialog footer-appearance="highlight" open>
+    <bq-dialog footer-appearance="highlight">
       <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
@@ -354,7 +370,7 @@ Use `footer-appearance="highlight"` when emphasis on the footer is important.
 
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="link">Button</bq-button>
         <bq-button variant="ghost">Button</bq-button>
         <bq-button variant="standard">Button</bq-button>
@@ -363,8 +379,6 @@ Use `footer-appearance="highlight"` when emphasis on the footer is important.
     ```
 
     ```js JavaScript icon="js"
-    import "./styles";
-
     const openDialogBtn = document.querySelector("bq-button");
     const dialogElem = document.querySelector("bq-dialog");
 
@@ -385,14 +399,14 @@ Use `footer-appearance="highlight"` when emphasis on the footer is important.
           <BqButton onBqClick={() => dialogRef.current?.show()}>Open dialog</BqButton>
 
           <BqDialog ref={dialogRef} footerAppearance="highlight">
-            <h5 className="bold flex items-center gap-s" slot="title">
+            <h5 slot="title">
               <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
               Title
             </h5>
 
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-            <div className="flex gap-xs" slot="footer">
+            <div className="dialog-footer" slot="footer">
               <BqButton appearance="link">Button</BqButton>
               <BqButton variant="ghost">Button</BqButton>
               <BqButton variant="standard">Button</BqButton>
@@ -407,14 +421,14 @@ Use `footer-appearance="highlight"` when emphasis on the footer is important.
     <bq-button (bqClick)="highlightDialog.show()">Open dialog</bq-button>
 
     <bq-dialog #highlightDialog footer-appearance="highlight">
-      <h5 class="bold flex items-center gap-s" slot="title">
+      <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
       </h5>
 
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div class="flex gap-xs" slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="link">Button</bq-button>
         <bq-button variant="ghost">Button</bq-button>
         <bq-button variant="standard">Button</bq-button>
@@ -434,14 +448,14 @@ Use `footer-appearance="highlight"` when emphasis on the footer is important.
       <BqButton @bqClick="dialogRef?.show()">Open dialog</BqButton>
 
       <BqDialog ref="dialogRef" footer-appearance="highlight">
-        <h5 class="bold flex items-center gap-s" slot="title">
+        <h5 slot="title">
           <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
           Title
         </h5>
 
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-        <div class="flex gap-xs" slot="footer">
+        <div class="dialog-footer" slot="footer">
           <BqButton appearance="link">Button</BqButton>
           <BqButton variant="ghost">Button</BqButton>
           <BqButton variant="standard">Button</BqButton>
@@ -459,60 +473,56 @@ This kind of dialog omits the footer section for situations where a minimal and 
 <CodeLivePreview
   code={`
   <style>
-    .dialog--no-footer {
-      padding: var(--bq-spacing-m);
-    }
-
-    .dialog--no-footer h5 {
-      display: flex;
-      font-weight: 700;
-      align-items: center;
-      gap: var(--bq-spacing-s);
+    @scope {
+      h5 {
+        display: flex;
+        font-weight: 700;
+        align-items: center;
+        gap: var(--bq-spacing-s);
+      }
     }
   </style>
 
-  <div class="dialog--no-footer">
-    <bq-button id="dialog-open-no-footer">Open dialog</bq-button>
+  <bq-button>Open dialog</bq-button>
 
-    <bq-dialog id="dialog-no-footer">
-      <h5 class="bold flex items-center gap-s" slot="title">
-        <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
-        Title
-      </h5>
+  <bq-dialog>
+    <h5 class="bold flex items-center gap-s" slot="title">
+      <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
+      Title
+    </h5>
 
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-    </bq-dialog>
-  </div>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+  </bq-dialog>
 
   <script>
-    (async () => {
-      const currentScript = document.currentScript;
+    (() => {
+      const preview = document.currentScript?.parentElement;
+      if (!preview) return;
 
-      await customElements.whenDefined('bq-dialog');
-
-      const previewRoot = currentScript?.closest('.preview');
-      const dialog = previewRoot?.querySelector('#dialog-no-footer');
-      const openButton = previewRoot?.querySelector('#dialog-open-no-footer');
-
+      const dialog = preview.querySelector('bq-dialog');
+      const openButton = preview.querySelector('bq-button');
       if (!dialog || !openButton) return;
 
-      await dialog.componentOnReady?.();
+      const getNativeDialog = () => dialog.shadowRoot?.querySelector('dialog');
+      const openPreviewDialog = () => {
+        const nativeDialog = getNativeDialog();
+        if (!nativeDialog?.showModal || nativeDialog.open) return;
 
-      openButton.addEventListener('bqClick', () => dialog.show());
+        dialog.classList.add('bq-dialog--open');
+        dialog.open = true;
+        nativeDialog.classList.remove('hidden');
+        nativeDialog.showModal();
+      };
+
+      openButton.addEventListener('bqClick', openPreviewDialog);
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .dialog--no-footer {
-      padding: var(--bq-spacing-m);
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-button>Open dialog</bq-button>
 
-    <bq-dialog open>
+    <bq-dialog>
       <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
@@ -523,8 +533,6 @@ This kind of dialog omits the footer section for situations where a minimal and 
     ```
 
     ```js JavaScript icon="js"
-    import "./styles";
-
     const openDialogBtn = document.querySelector("bq-button");
     const dialogElem = document.querySelector("bq-dialog");
 
@@ -545,7 +553,7 @@ This kind of dialog omits the footer section for situations where a minimal and 
           <BqButton onBqClick={() => dialogRef.current?.show()}>Open dialog</BqButton>
 
           <BqDialog ref={dialogRef}>
-            <h5 className="bold flex items-center gap-s" slot="title">
+            <h5 slot="title">
               <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
               Title
             </h5>
@@ -561,7 +569,7 @@ This kind of dialog omits the footer section for situations where a minimal and 
     <bq-button (bqClick)="infoDialog.show()">Open dialog</bq-button>
 
     <bq-dialog #infoDialog>
-      <h5 class="bold flex items-center gap-s" slot="title">
+      <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
       </h5>
@@ -582,7 +590,7 @@ This kind of dialog omits the footer section for situations where a minimal and 
       <BqButton @bqClick="dialogRef?.show()">Open dialog</BqButton>
 
       <BqDialog ref="dialogRef">
-        <h5 class="bold flex items-center gap-s" slot="title">
+        <h5 slot="title">
           <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
           Title
         </h5>
@@ -601,73 +609,72 @@ Use `disable-backdrop` when you want to allow users to focus on the dialog conte
 <CodeLivePreview
   code={`
   <style>
-    .dialog--no-backdrop {
-      padding: var(--bq-spacing-m);
-      position: relative;
-      z-index: 12;
-    }
+    @scope {
+      :scope {
+        position: relative;
+        z-index: 12;
+      }
 
-    .dialog--no-backdrop h5 {
-      display: flex;
-      font-weight: 700;
-      align-items: center;
-      gap: var(--bq-spacing-s);
-    }
+      h5 {
+        display: flex;
+        font-weight: 700;
+        align-items: center;
+        gap: var(--bq-spacing-s);
+      }
 
-    .dialog--no-backdrop div {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      .dialog-footer {
+        display: flex;
+        gap: var(--bq-spacing-xs);
+      }
     }
   </style>
 
-  <div class="dialog--no-backdrop">
-    <bq-button id="dialog-open-no-backdrop">Open dialog</bq-button>
+  <bq-button>Open dialog</bq-button>
 
-    <bq-dialog id="dialog-no-backdrop" disable-backdrop>
-      <h5 class="bold flex items-center gap-s" slot="title">
-        <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
-        Title
-      </h5>
+  <bq-dialog disable-backdrop>
+    <h5 class="bold flex items-center gap-s" slot="title">
+      <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
+      Title
+    </h5>
 
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div class="flex gap-xs" slot="footer">
-        <bq-button appearance="link">Button</bq-button>
-        <bq-button variant="ghost">Button</bq-button>
-        <bq-button variant="standard">Button</bq-button>
-      </div>
-    </bq-dialog>
-  </div>
+    <div class="dialog-footer" slot="footer">
+      <bq-button appearance="link">Button</bq-button>
+      <bq-button variant="ghost">Button</bq-button>
+      <bq-button variant="standard">Button</bq-button>
+    </div>
+  </bq-dialog>
 
   <script>
-    (async () => {
-      const currentScript = document.currentScript;
+    (() => {
+      const preview = document.currentScript?.parentElement;
+      if (!preview) return;
 
-      await customElements.whenDefined('bq-dialog');
-
-      const previewRoot = currentScript?.closest('.preview');
-      const dialog = previewRoot?.querySelector('#dialog-no-backdrop');
-      const openButton = previewRoot?.querySelector('#dialog-open-no-backdrop');
-
+      const dialog = preview.querySelector('bq-dialog');
+      const openButton = preview.querySelector('bq-button');
       if (!dialog || !openButton) return;
 
-      await dialog.componentOnReady?.();
+      const getNativeDialog = () => dialog.shadowRoot?.querySelector('dialog');
+      const openPreviewDialog = () => {
+        const nativeDialog = getNativeDialog();
+        if (!nativeDialog?.show || nativeDialog.open) return;
 
-      openButton.addEventListener('bqClick', () => dialog.show());
+        dialog.classList.add('bq-dialog--open');
+        dialog.open = true;
+        nativeDialog.classList.remove('hidden');
+        nativeDialog.show();
+      };
+
+      openButton.addEventListener('bqClick', openPreviewDialog);
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .dialog--no-backdrop {
-      padding: var(--bq-spacing-m);
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-button>Open dialog</bq-button>
 
-    <bq-dialog disable-backdrop open>
+    <bq-dialog disable-backdrop>
       <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
@@ -675,7 +682,7 @@ Use `disable-backdrop` when you want to allow users to focus on the dialog conte
 
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="link">Button</bq-button>
         <bq-button variant="ghost">Button</bq-button>
         <bq-button variant="standard">Button</bq-button>
@@ -684,8 +691,6 @@ Use `disable-backdrop` when you want to allow users to focus on the dialog conte
     ```
 
     ```js JavaScript icon="js"
-    import "./styles";
-
     const openDialogBtn = document.querySelector("bq-button");
     const dialogElem = document.querySelector("bq-dialog");
 
@@ -706,14 +711,14 @@ Use `disable-backdrop` when you want to allow users to focus on the dialog conte
           <BqButton onBqClick={() => dialogRef.current?.show()}>Open dialog</BqButton>
 
           <BqDialog ref={dialogRef} disableBackdrop>
-            <h5 className="bold flex items-center gap-s" slot="title">
+            <h5 slot="title">
               <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
               Title
             </h5>
 
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-            <div className="flex gap-xs" slot="footer">
+            <div className="dialog-footer" slot="footer">
               <BqButton appearance="link">Button</BqButton>
               <BqButton variant="ghost">Button</BqButton>
               <BqButton variant="standard">Button</BqButton>
@@ -728,14 +733,14 @@ Use `disable-backdrop` when you want to allow users to focus on the dialog conte
     <bq-button (bqClick)="noBackdropDialog.show()">Open dialog</bq-button>
 
     <bq-dialog #noBackdropDialog disable-backdrop>
-      <h5 class="bold flex items-center gap-s" slot="title">
+      <h5 slot="title">
         <bq-icon name="info" size="30" color="text--accent" role="img" title="Info"></bq-icon>
         Title
       </h5>
 
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-      <div class="flex gap-xs" slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="link">Button</bq-button>
         <bq-button variant="ghost">Button</bq-button>
         <bq-button variant="standard">Button</bq-button>
@@ -755,14 +760,14 @@ Use `disable-backdrop` when you want to allow users to focus on the dialog conte
       <BqButton @bqClick="dialogRef?.show()">Open dialog</BqButton>
 
       <BqDialog ref="dialogRef" disable-backdrop>
-        <h5 class="bold flex items-center gap-s" slot="title">
+        <h5 slot="title">
           <BqIcon name="info" size="30" color="text--accent" role="img" title="Info" />
           Title
         </h5>
 
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
 
-        <div class="flex gap-xs" slot="footer">
+        <div class="dialog-footer" slot="footer">
           <BqButton appearance="link">Button</BqButton>
           <BqButton variant="ghost">Button</BqButton>
           <BqButton variant="standard">Button</BqButton>
@@ -780,86 +785,84 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
 <CodeLivePreview
   code={`
   <style>
-    .dialog--confirm {
-      padding: var(--bq-spacing-m);
-    }
+    @scope {
+      h5 {
+        display: flex;
+        font-weight: 700;
+        align-items: center;
+        gap: var(--bq-spacing-s);
+      }
 
-    .dialog--confirm h5 {
-      display: flex;
-      font-weight: 700;
-      align-items: center;
-      gap: var(--bq-spacing-s);
-    }
+      .dialog-caption {
+        color: var(--bq-text--secondary);
+        font-size: var(--bq-font-size--s);
+      }
 
-    .dialog--confirm span {
-      color: var(--bq-text--secondary);
-      font-size: var(--bq-font-size--s);
-    }
-
-    .dialog--confirm div {
-      display: flex;
-      gap: var(--bq-spacing-xs);
+      .dialog-footer {
+        display: flex;
+        gap: var(--bq-spacing-xs);
+      }
     }
   </style>
 
-  <div class="dialog--confirm">
-    <bq-button id="dialog-open-confirm" variant="ghost">Deactivate account</bq-button>
+  <bq-button variant="ghost">Deactivate account</bq-button>
 
-    <bq-dialog
-      id="dialog-confirm"
-      disable-close-click-outside
-      disable-close-esc-keydown
-      hide-close-button
-    >
-      <h5 class="bold flex items-center gap-s" slot="title">
-        <bq-icon name="info" size="30" color="icon--danger" role="img" title="Danger"></bq-icon>
-        Deactivate account
-      </h5>
+  <bq-dialog
+    disable-close-click-outside
+    disable-close-esc-keydown
+    hide-close-button
+  >
+    <h5 class="bold flex items-center gap-s" slot="title">
+      <bq-icon name="info" size="30" color="icon--danger" role="img" title="Danger"></bq-icon>
+      Deactivate account
+    </h5>
 
-      <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
-      <span>This action cannot be undone</span>
+    <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
+    <span class="dialog-caption">This action cannot be undone</span>
 
-      <div class="flex gap-xs" slot="footer">
-        <bq-button id="dialog-cancel-confirm" appearance="secondary">Cancel</bq-button>
-        <bq-button id="dialog-confirm-action" variant="danger">Yes, deactivate</bq-button>
-      </div>
-    </bq-dialog>
-  </div>
+    <div class="dialog-footer" slot="footer">
+      <bq-button appearance="secondary">Cancel</bq-button>
+      <bq-button variant="danger">Yes, deactivate</bq-button>
+    </div>
+  </bq-dialog>
 
   <script>
-    (async () => {
-      const currentScript = document.currentScript;
+    (() => {
+      const preview = document.currentScript?.parentElement;
+      if (!preview) return;
 
-      await customElements.whenDefined('bq-dialog');
-
-      const previewRoot = currentScript?.closest('.preview');
-      const dialog = previewRoot?.querySelector('#dialog-confirm');
-      const openButton = previewRoot?.querySelector('#dialog-open-confirm');
-      const cancelButton = previewRoot?.querySelector('#dialog-cancel-confirm');
-      const confirmButton = previewRoot?.querySelector('#dialog-confirm-action');
-
+      const dialog = preview.querySelector('bq-dialog');
+      const openButton = preview.querySelector('bq-button[variant="ghost"]');
+      const cancelButton = preview.querySelector('bq-button[appearance="secondary"]');
+      const confirmButton = preview.querySelector('bq-button[variant="danger"]');
       if (!dialog || !openButton || !cancelButton || !confirmButton) return;
 
-      await dialog.componentOnReady?.();
+      const getNativeDialog = () => dialog.shadowRoot?.querySelector('dialog');
+      const openPreviewDialog = () => {
+        const nativeDialog = getNativeDialog();
+        if (!nativeDialog?.showModal || nativeDialog.open) return;
 
-      openButton.addEventListener('bqClick', () => dialog.show());
-      cancelButton.addEventListener('bqClick', () => dialog.cancel());
-      confirmButton.addEventListener('bqClick', () => dialog.hide());
+        dialog.classList.add('bq-dialog--open');
+        dialog.open = true;
+        nativeDialog.classList.remove('hidden');
+        nativeDialog.showModal();
+      };
+      const closePreviewDialog = () => {
+        const nativeDialog = getNativeDialog();
+        if (!nativeDialog?.open) return;
+
+        nativeDialog.close();
+        dialog.open = false;
+        dialog.classList.remove('bq-dialog--open');
+      };
+
+      openButton.addEventListener('bqClick', openPreviewDialog);
+      cancelButton.addEventListener('bqClick', closePreviewDialog);
+      confirmButton.addEventListener('bqClick', closePreviewDialog);
     })();
   </script>`}
 >
   <CodeGroup>
-    ```css CSS icon="css"
-    .dialog--confirm {
-      padding: var(--bq-spacing-m);
-    }
-
-    .dialog--confirm span {
-      color: var(--bq-text--secondary);
-      font-size: var(--bq-font-size--s);
-    }
-    ```
-
     ```html HTML icon="html5"
     <bq-button variant="ghost">Deactivate account</bq-button>
 
@@ -874,9 +877,9 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
       </h5>
 
       <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
-      <span>This action cannot be undone</span>
+      <span class="dialog-caption">This action cannot be undone</span>
 
-      <div slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="secondary" variant="standard">Cancel</bq-button>
         <bq-button variant="danger">Yes, deactivate</bq-button>
       </div>
@@ -884,24 +887,22 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
     ```
 
     ```js JavaScript icon="js"
-    import "./styles";
-
     const deactivateBtn = document.querySelector('bq-button[variant="ghost"]');
-    const cancelBtn = document.querySelector('bq-button[variant="standard"]');
+    const cancelBtn = document.querySelector('bq-button[appearance="secondary"]');
     const confirmBtn = document.querySelector('bq-button[variant="danger"]');
     const dialogElem = document.querySelector("bq-dialog");
 
-    const openDialog = () => {
+    deactivateBtn.addEventListener("bqClick", () => {
       dialogElem.open = true;
-    };
+    });
 
-    const closeDialog = () => {
+    cancelBtn.addEventListener("bqClick", () => {
       dialogElem.open = false;
-    };
+    });
 
-    deactivateBtn.addEventListener("bqClick", openDialog);
-    cancelBtn.addEventListener("bqClick", closeDialog);
-    confirmBtn.addEventListener("bqClick", closeDialog);
+    confirmBtn.addEventListener("bqClick", () => {
+      dialogElem.open = false;
+    });
     ```
 
     ```jsx React icon="react"
@@ -923,15 +924,15 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
             disableCloseEscKeydown
             hideCloseButton
           >
-            <h5 className="bold flex items-center gap-s" slot="title">
+            <h5 slot="title">
               <BqIcon name="info" size="30" color="icon--danger" role="img" title="Danger" />
               Deactivate account
             </h5>
 
             <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
-            <span className="text-s text-secondary">This action cannot be undone</span>
+            <span className="dialog-caption">This action cannot be undone</span>
 
-            <div className="flex gap-xs" slot="footer">
+            <div className="dialog-footer" slot="footer">
               <BqButton appearance="secondary" onBqClick={() => dialogRef.current?.cancel()}>
                 Cancel
               </BqButton>
@@ -954,15 +955,15 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
       disable-close-esc-keydown
       hide-close-button
     >
-      <h5 class="bold flex items-center gap-s" slot="title">
+      <h5 slot="title">
         <bq-icon name="info" size="30" color="icon--danger" role="img" title="Danger"></bq-icon>
         Deactivate account
       </h5>
 
       <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
-      <span class="text-s text-secondary">This action cannot be undone</span>
+      <span class="dialog-caption">This action cannot be undone</span>
 
-      <div class="flex gap-xs" slot="footer">
+      <div class="dialog-footer" slot="footer">
         <bq-button appearance="secondary" (bqClick)="confirmDialog.cancel()">Cancel</bq-button>
         <bq-button variant="danger" (bqClick)="confirmDialog.hide()">Yes, deactivate</bq-button>
       </div>
@@ -986,15 +987,15 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
         disable-close-esc-keydown
         hide-close-button
       >
-        <h5 class="bold flex items-center gap-s" slot="title">
+        <h5 slot="title">
           <BqIcon name="info" size="30" color="icon--danger" role="img" title="Danger" />
           Deactivate account
         </h5>
 
         <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
-        <span class="text-s text-secondary">This action cannot be undone</span>
+        <span class="dialog-caption">This action cannot be undone</span>
 
-        <div class="flex gap-xs" slot="footer">
+        <div class="dialog-footer" slot="footer">
           <BqButton appearance="secondary" @bqClick="dialogRef?.cancel()">Cancel</BqButton>
           <BqButton variant="danger" @bqClick="dialogRef?.hide()">Yes, deactivate</BqButton>
         </div>
@@ -1040,24 +1041,40 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
       <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
       Do
     </span>
-    Use representative icons and semantic colors when they help communicate whether the message is informative, cautionary, or destructive.
+    Match the dialog size to the amount of content so the layout feels intentional and easy to scan.
   </Card>
   <Card>
     <span className="flex items-center mr-2 text-lg font-medium" role="heading">
       <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
       Don't
     </span>
-    Do not rely on brand styling alone for critical states such as warnings or irreversible actions.
+    Do not force long forms, dense tables, or multi-step workflows into a dialog that needs more room than the pattern is meant to provide.
+  </Card>
+  <Card>
+    <span className="flex items-center mr-2 text-lg font-medium" role="heading">
+      <Icon className="mr-2" icon="check" iconType="solid" size={20} color="var(--bq-stroke--success)" />
+      Do
+    </span>
+    Keep a reliable dismissal path available, especially in confirmation flows where people may need to back out safely.
+  </Card>
+  <Card>
+    <span className="flex items-center mr-2 text-lg font-medium" role="heading">
+      <Icon className="mr-2" icon="xmark" iconType="solid" size={20} color="var(--bq-stroke--danger)" />
+      Don't
+    </span>
+    Do not disable the close button, backdrop dismissal, and <kbd>Esc</kbd> handling together unless the action carries real risk and the remaining actions are explicit.
   </Card>
 </CardGroup>
 
 ## Accessibility
 
-- **Provide a clear title** — the content in the `title` slot should tell assistive technology users what decision or information the dialog contains.
-- **Include an explicit dismissal path** — people should always have a way to close or cancel, whether through the close button, a footer action, or both.
+- **Built-in dialog semantics** — the component applies `aria-labelledby="bq-dialog--title"` and `aria-modal="true"` to the native `<dialog>` element, so assistive technology can identify it as a modal surface.
+- **Built-in close control labeling** — when the default close button is shown, it includes an accessible `label="Close"` and a decorative close icon marked with `aria-hidden="true"`.
+- **Provide a meaningful title** — the content you place in the `title` slot becomes the dialog's accessible label, so it should clearly describe the decision, task, or message.
+- **Include an explicit dismissal path** — if you hide the close button or disable outside dismissal, provide a clear cancel or close action in the footer.
+- **Preserve keyboard expectations** — keep <kbd>Esc</kbd> enabled for dismissible dialogs unless there is a strong product reason to require an explicit choice.
 - **Use precise action labels** — button text should describe the result of the action, especially in confirmations and destructive flows.
-- **Preserve keyboard access** — dialogs should be reachable, usable, and dismissible from the keyboard, including support for <kbd>Esc</kbd> unless there is a strong product reason to disable it.
-- **Use `disable-backdrop` carefully** — removing the backdrop reduces the modal emphasis and can make focus management feel less obvious.
+- **Use `disable-backdrop` carefully** — removing the backdrop changes the modal emphasis, so make sure the surrounding page does not compete visually with the dialog content.
 
 ## API reference
 
@@ -1134,6 +1151,10 @@ Use this variant to confirm irreversible actions with clear messaging and focuse
   | `--bq-dialog--width-large` | Large dialog width | `640px` |
   | `--bq-dialog-z-index` | Z-index used when the dialog is open | `10` |
 </Expandable>
+
+<Tip>
+  Learn more about [styling with shadow parts](/theming/styles) and [CSS custom properties](/theming/global-css-variables).
+</Tip>
 
 ## Resources
 
