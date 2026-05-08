@@ -3,6 +3,7 @@ title: Status
 description: Statuses communicate the state or condition of an item, task, or process using a compact visual indicator and label.
 ---
 
+import { CardTile } from "/snippets/CardTile.jsx";
 import { CodeLivePreview } from "/snippets/CodeLivePreview.jsx";
 
 <Frame className="px-4 py-4" caption="Status component overview">
@@ -46,12 +47,12 @@ Statuses help people understand the current state of an item at a glance. Use th
 The design guidance describes two common status patterns, even though the shipped component focuses on one of them.
 
 <CardGroup cols={2}>
-  <Card title="Dot status">
+  <CardTile title="Dot status">
     A dot status pairs a colored circular indicator with a short text label. This is the pattern implemented by `bq-status`.
-  </Card>
-  <Card title="Icon status">
+  </CardTile>
+  <CardTile title="Icon status">
     An icon status uses a symbol instead of a plain dot when the message needs stronger visual emphasis or a more specific cue.
-  </Card>
+  </CardTile>
 </CardGroup>
 
 ## Anatomy
@@ -61,12 +62,12 @@ The design guidance describes two common status patterns, even though the shippe
   <img className="hidden dark:block" src="/components/images/status/status-anatomy-dark.svg" alt="BEEQ Status component anatomy" />
 </Frame>
 
-The structure is intentionally small: one indicator plus one label. That keeps the component readable inside compact layouts.
+The status pattern is made up of a leading visual symbol and a short text label. Together they communicate state quickly and keep the message easy to scan in dense layouts such as tables, cards, and lists.
 
 | Part | Element | Description |
 |---|---|---|
-| **1** | Icon | The visual status marker that signals the selected status type |
-| **2** | Header | The visible text label that explains what the status means |
+| **1** | Icon | The leading visual symbol that reinforces the status meaning |
+| **2** | Header | The short visible text that communicates the current state or condition |
 
 ## Design guidelines
 
@@ -362,6 +363,12 @@ Use `type="success"` when the state confirms a positive outcome.
 |---|---|---|---|---|
 | `type` | `type` | Defines the type of status to display | `'alert'` \| `'danger'` \| `'info'` \| `'neutral'` \| `'success'` | `'neutral'` |
 
+### Slots
+
+| Slot | Description |
+|---|---|
+| `default` | The visible text label content for the status |
+
 ### Shadow parts
 
 | Part | Description |
@@ -377,6 +384,10 @@ Use `type="success"` when the state confirms a positive outcome.
   |---|---|---|
   | `--bq-status-circle--size` | Status circle size | `12px` |
 </Expandable>
+
+<Tip>
+  Learn more about [styling with shadow parts](/theming/styles) and [CSS custom properties](/theming/global-css-variables).
+</Tip>
 
 ## Resources
 
