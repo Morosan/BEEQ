@@ -20,6 +20,7 @@ import { TDrawerPlacement, TDrawerPosition } from "./components/drawer/bq-drawer
 import { TEmptyStateSize } from "./components/empty-state/bq-empty-state.types";
 import { TIconWeight } from "./components/icon/bq-icon.types";
 import { TNotificationBorderRadius, TNotificationType } from "./components/notification/bq-notification.types";
+import { TPaginationChange, TPaginationSize } from "./components/pagination/bq-pagination.types";
 import { TProgressBorderShape, TProgressThickness, TProgressType } from "./components/progress/bq-progress.types";
 import { TRadioGroupOrientation } from "./components/radio-group/bq-radio-group.types";
 import { TSelectValue } from "./components/select/bq-select";
@@ -49,6 +50,7 @@ export { TDrawerPlacement, TDrawerPosition } from "./components/drawer/bq-drawer
 export { TEmptyStateSize } from "./components/empty-state/bq-empty-state.types";
 export { TIconWeight } from "./components/icon/bq-icon.types";
 export { TNotificationBorderRadius, TNotificationType } from "./components/notification/bq-notification.types";
+export { TPaginationChange, TPaginationSize } from "./components/pagination/bq-pagination.types";
 export { TProgressBorderShape, TProgressThickness, TProgressType } from "./components/progress/bq-progress.types";
 export { TRadioGroupOrientation } from "./components/radio-group/bq-radio-group.types";
 export { TSelectValue } from "./components/select/bq-select";
@@ -1776,6 +1778,92 @@ export namespace Components {
     interface BqPageTitle {
     }
     /**
+     * The Pagination component lets users navigate through a collection split into pages.
+     * @example How to use it
+     * ```html
+     * <bq-pagination page="1" pages="10"></bq-pagination>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-icon
+     * @attr {boolean} arrows - If `true`, it shows previous and next arrow controls.
+     * @attr {number} boundary-count - Number of always-visible pages at the beginning and end.
+     * @attr {boolean} disabled - If `true`, pagination controls cannot be interacted with.
+     * @attr {string} label - The `aria-label` attribute used to describe the pagination navigation.
+     * @attr {number} page - The currently selected page.
+     * @attr {number} pages - The total number of pages.
+     * @attr {number} sibling-count - Number of pages to show before and after the current page.
+     * @attr {"small" | "medium"} size - The size of the pagination controls.
+     * @event bqChange - Handler to be called when the selected page changes.
+     * @method goToPage() - Go to a specific page.
+     * @method nextPage() - Go to the next page.
+     * @method previousPage() - Go to the previous page.
+     * @cssprop --bq-pagination--border-radius - Pagination control border radius.
+     * @cssprop --bq-pagination--gap - Gap between pagination controls.
+     * @cssprop --bq-pagination--small-control-size - Small pagination control size.
+     * @cssprop --bq-pagination--small-font-size - Small pagination font size.
+     * @cssprop --bq-pagination--medium-control-size - Medium pagination control size.
+     * @cssprop --bq-pagination--medium-font-size - Medium pagination font size.
+     */
+    interface BqPagination {
+        /**
+          * If `true`, it shows previous and next arrow controls
+          * @default true
+         */
+        "arrows": boolean;
+        /**
+          * Number of always-visible pages at the beginning and end
+          * @default 1
+         */
+        "boundaryCount": number;
+        /**
+          * If `true`, pagination controls cannot be interacted with
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Go to a specific page.
+          * @param page - The page number to select.
+          * @returns A promise that resolves when the page update has been handled.
+         */
+        "goToPage": (page: number) => Promise<void>;
+        /**
+          * The `aria-label` attribute used to describe the pagination navigation
+          * @default 'Pagination'
+         */
+        "label": string;
+        /**
+          * Go to the next page.
+          * @returns A promise that resolves when the page update has been handled.
+         */
+        "nextPage": () => Promise<void>;
+        /**
+          * The currently selected page
+          * @default 1
+         */
+        "page": number;
+        /**
+          * The total number of pages
+          * @default 1
+         */
+        "pages": number;
+        /**
+          * Go to the previous page.
+          * @returns A promise that resolves when the page update has been handled.
+         */
+        "previousPage": () => Promise<void>;
+        /**
+          * Number of pages to show before and after the current page
+          * @default 1
+         */
+        "siblingCount": number;
+        /**
+          * The size of the pagination controls
+          * @default 'medium'
+         */
+        "size": TPaginationSize;
+    }
+    /**
      * The Panel component is a versatile and essential element used to wrap and display content in a floating panel.
      * @example How to use it
      * ```html
@@ -3292,6 +3380,10 @@ export interface BqOptionListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBqOptionListElement;
 }
+export interface BqPaginationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLBqPaginationElement;
+}
 export interface BqRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBqRadioElement;
@@ -4523,6 +4615,51 @@ declare global {
         prototype: HTMLBqPageTitleElement;
         new (): HTMLBqPageTitleElement;
     };
+    interface HTMLBqPaginationElementEventMap {
+        "bqChange": TPaginationChange;
+    }
+    /**
+     * The Pagination component lets users navigate through a collection split into pages.
+     * @example How to use it
+     * ```html
+     * <bq-pagination page="1" pages="10"></bq-pagination>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-icon
+     * @attr {boolean} arrows - If `true`, it shows previous and next arrow controls.
+     * @attr {number} boundary-count - Number of always-visible pages at the beginning and end.
+     * @attr {boolean} disabled - If `true`, pagination controls cannot be interacted with.
+     * @attr {string} label - The `aria-label` attribute used to describe the pagination navigation.
+     * @attr {number} page - The currently selected page.
+     * @attr {number} pages - The total number of pages.
+     * @attr {number} sibling-count - Number of pages to show before and after the current page.
+     * @attr {"small" | "medium"} size - The size of the pagination controls.
+     * @event bqChange - Handler to be called when the selected page changes.
+     * @method goToPage() - Go to a specific page.
+     * @method nextPage() - Go to the next page.
+     * @method previousPage() - Go to the previous page.
+     * @cssprop --bq-pagination--border-radius - Pagination control border radius.
+     * @cssprop --bq-pagination--gap - Gap between pagination controls.
+     * @cssprop --bq-pagination--small-control-size - Small pagination control size.
+     * @cssprop --bq-pagination--small-font-size - Small pagination font size.
+     * @cssprop --bq-pagination--medium-control-size - Medium pagination control size.
+     * @cssprop --bq-pagination--medium-font-size - Medium pagination font size.
+     */
+    interface HTMLBqPaginationElement extends Components.BqPagination, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLBqPaginationElementEventMap>(type: K, listener: (this: HTMLBqPaginationElement, ev: BqPaginationCustomEvent<HTMLBqPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLBqPaginationElementEventMap>(type: K, listener: (this: HTMLBqPaginationElement, ev: BqPaginationCustomEvent<HTMLBqPaginationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLBqPaginationElement: {
+        prototype: HTMLBqPaginationElement;
+        new (): HTMLBqPaginationElement;
+    };
     /**
      * The Panel component is a versatile and essential element used to wrap and display content in a floating panel.
      * @example How to use it
@@ -5455,6 +5592,7 @@ declare global {
         "bq-option-group": HTMLBqOptionGroupElement;
         "bq-option-list": HTMLBqOptionListElement;
         "bq-page-title": HTMLBqPageTitleElement;
+        "bq-pagination": HTMLBqPaginationElement;
         "bq-panel": HTMLBqPanelElement;
         "bq-progress": HTMLBqProgressElement;
         "bq-radio": HTMLBqRadioElement;
@@ -7346,6 +7484,80 @@ declare namespace LocalJSX {
     interface BqPageTitle {
     }
     /**
+     * The Pagination component lets users navigate through a collection split into pages.
+     * @example How to use it
+     * ```html
+     * <bq-pagination page="1" pages="10"></bq-pagination>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-icon
+     * @attr {boolean} arrows - If `true`, it shows previous and next arrow controls.
+     * @attr {number} boundary-count - Number of always-visible pages at the beginning and end.
+     * @attr {boolean} disabled - If `true`, pagination controls cannot be interacted with.
+     * @attr {string} label - The `aria-label` attribute used to describe the pagination navigation.
+     * @attr {number} page - The currently selected page.
+     * @attr {number} pages - The total number of pages.
+     * @attr {number} sibling-count - Number of pages to show before and after the current page.
+     * @attr {"small" | "medium"} size - The size of the pagination controls.
+     * @event bqChange - Handler to be called when the selected page changes.
+     * @method goToPage() - Go to a specific page.
+     * @method nextPage() - Go to the next page.
+     * @method previousPage() - Go to the previous page.
+     * @cssprop --bq-pagination--border-radius - Pagination control border radius.
+     * @cssprop --bq-pagination--gap - Gap between pagination controls.
+     * @cssprop --bq-pagination--small-control-size - Small pagination control size.
+     * @cssprop --bq-pagination--small-font-size - Small pagination font size.
+     * @cssprop --bq-pagination--medium-control-size - Medium pagination control size.
+     * @cssprop --bq-pagination--medium-font-size - Medium pagination font size.
+     */
+    interface BqPagination {
+        /**
+          * If `true`, it shows previous and next arrow controls
+          * @default true
+         */
+        "arrows"?: boolean;
+        /**
+          * Number of always-visible pages at the beginning and end
+          * @default 1
+         */
+        "boundaryCount"?: number;
+        /**
+          * If `true`, pagination controls cannot be interacted with
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `aria-label` attribute used to describe the pagination navigation
+          * @default 'Pagination'
+         */
+        "label"?: string;
+        /**
+          * Handler to be called when the selected page changes.
+         */
+        "onBqChange"?: (event: BqPaginationCustomEvent<TPaginationChange>) => void;
+        /**
+          * The currently selected page
+          * @default 1
+         */
+        "page"?: number;
+        /**
+          * The total number of pages
+          * @default 1
+         */
+        "pages"?: number;
+        /**
+          * Number of pages to show before and after the current page
+          * @default 1
+         */
+        "siblingCount"?: number;
+        /**
+          * The size of the pagination controls
+          * @default 'medium'
+         */
+        "size"?: TPaginationSize;
+    }
+    /**
      * The Panel component is a versatile and essential element used to wrap and display content in a floating panel.
      * @example How to use it
      * ```html
@@ -9118,6 +9330,16 @@ declare namespace LocalJSX {
     interface BqOptionListAttributes {
         "ariaLabel": string;
     }
+    interface BqPaginationAttributes {
+        "arrows": boolean;
+        "boundaryCount": number;
+        "disabled": boolean;
+        "label": string;
+        "page": number;
+        "pages": number;
+        "siblingCount": number;
+        "size": TPaginationSize;
+    }
     interface BqPanelAttributes {
         "disableScrollLock": boolean;
         "distance": number;
@@ -9333,6 +9555,7 @@ declare namespace LocalJSX {
         "bq-option-group": BqOptionGroup;
         "bq-option-list": Omit<BqOptionList, keyof BqOptionListAttributes> & { [K in keyof BqOptionList & keyof BqOptionListAttributes]?: BqOptionList[K] } & { [K in keyof BqOptionList & keyof BqOptionListAttributes as `attr:${K}`]?: BqOptionListAttributes[K] } & { [K in keyof BqOptionList & keyof BqOptionListAttributes as `prop:${K}`]?: BqOptionList[K] };
         "bq-page-title": BqPageTitle;
+        "bq-pagination": Omit<BqPagination, keyof BqPaginationAttributes> & { [K in keyof BqPagination & keyof BqPaginationAttributes]?: BqPagination[K] } & { [K in keyof BqPagination & keyof BqPaginationAttributes as `attr:${K}`]?: BqPaginationAttributes[K] } & { [K in keyof BqPagination & keyof BqPaginationAttributes as `prop:${K}`]?: BqPagination[K] };
         "bq-panel": Omit<BqPanel, keyof BqPanelAttributes> & { [K in keyof BqPanel & keyof BqPanelAttributes]?: BqPanel[K] } & { [K in keyof BqPanel & keyof BqPanelAttributes as `attr:${K}`]?: BqPanelAttributes[K] } & { [K in keyof BqPanel & keyof BqPanelAttributes as `prop:${K}`]?: BqPanel[K] };
         "bq-progress": Omit<BqProgress, keyof BqProgressAttributes> & { [K in keyof BqProgress & keyof BqProgressAttributes]?: BqProgress[K] } & { [K in keyof BqProgress & keyof BqProgressAttributes as `attr:${K}`]?: BqProgressAttributes[K] } & { [K in keyof BqProgress & keyof BqProgressAttributes as `prop:${K}`]?: BqProgress[K] };
         "bq-radio": Omit<BqRadio, keyof BqRadioAttributes> & { [K in keyof BqRadio & keyof BqRadioAttributes]?: BqRadio[K] } & { [K in keyof BqRadio & keyof BqRadioAttributes as `attr:${K}`]?: BqRadioAttributes[K] } & { [K in keyof BqRadio & keyof BqRadioAttributes as `prop:${K}`]?: BqRadio[K] } & OneOf<"name", BqRadio["name"], BqRadioAttributes["name"]> & OneOf<"value", BqRadio["value"], BqRadioAttributes["value"]>;
@@ -10227,6 +10450,35 @@ declare module "@stencil/core" {
              * @cssprop --title-textSize - Page title text size for title
              */
             "bq-page-title": LocalJSX.IntrinsicElements["bq-page-title"] & JSXBase.HTMLAttributes<HTMLBqPageTitleElement>;
+            /**
+             * The Pagination component lets users navigate through a collection split into pages.
+             * @example How to use it
+             * ```html
+             * <bq-pagination page="1" pages="10"></bq-pagination>
+             * ```
+             * @documentation https://www.beeq.design/
+             * @status progress
+             * @dependency bq-icon
+             * @attr {boolean} arrows - If `true`, it shows previous and next arrow controls.
+             * @attr {number} boundary-count - Number of always-visible pages at the beginning and end.
+             * @attr {boolean} disabled - If `true`, pagination controls cannot be interacted with.
+             * @attr {string} label - The `aria-label` attribute used to describe the pagination navigation.
+             * @attr {number} page - The currently selected page.
+             * @attr {number} pages - The total number of pages.
+             * @attr {number} sibling-count - Number of pages to show before and after the current page.
+             * @attr {"small" | "medium"} size - The size of the pagination controls.
+             * @event bqChange - Handler to be called when the selected page changes.
+             * @method goToPage() - Go to a specific page.
+             * @method nextPage() - Go to the next page.
+             * @method previousPage() - Go to the previous page.
+             * @cssprop --bq-pagination--border-radius - Pagination control border radius.
+             * @cssprop --bq-pagination--gap - Gap between pagination controls.
+             * @cssprop --bq-pagination--small-control-size - Small pagination control size.
+             * @cssprop --bq-pagination--small-font-size - Small pagination font size.
+             * @cssprop --bq-pagination--medium-control-size - Medium pagination control size.
+             * @cssprop --bq-pagination--medium-font-size - Medium pagination font size.
+             */
+            "bq-pagination": LocalJSX.IntrinsicElements["bq-pagination"] & JSXBase.HTMLAttributes<HTMLBqPaginationElement>;
             /**
              * The Panel component is a versatile and essential element used to wrap and display content in a floating panel.
              * @example How to use it

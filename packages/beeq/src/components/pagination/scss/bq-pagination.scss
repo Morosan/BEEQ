@@ -1,0 +1,56 @@
+/* -------------------------------------------------------------------------- */
+/*                              Pagination styles                             */
+/* -------------------------------------------------------------------------- */
+
+@import './bq-pagination.variables';
+
+@layer components {
+  .bq-pagination {
+    @apply m-0 flex list-none items-center p-0;
+
+    gap: var(--bq-pagination--gap);
+  }
+
+  .bq-pagination__item {
+    @apply flex;
+  }
+
+  .bq-pagination__control,
+  .bq-pagination__ellipsis {
+    @apply box-border flex shrink-0 select-none items-center justify-center rounded-[--bq-pagination--border-radius] text-primary;
+  }
+
+  .bq-pagination__control {
+    @apply cursor-pointer border-0 bg-transparent p-0 font-medium transition-colors duration-300 ease-in-out;
+    @apply hover:enabled:bg-hover-ui-secondary active:enabled:bg-active-ui-secondary;
+    @apply focus-visible:focus disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .bq-pagination__control--selected {
+    @apply bg-ui-brand text-alt opacity-100;
+  }
+
+  .bq-pagination__control--selected:disabled {
+    @apply cursor-default opacity-100;
+  }
+
+  .bq-pagination--small .bq-pagination__control,
+  .bq-pagination--small .bq-pagination__ellipsis {
+    @apply text-[length:--bq-pagination--small-font-size];
+
+    block-size: var(--bq-pagination--small-control-size);
+    inline-size: var(--bq-pagination--small-control-size);
+  }
+
+  .bq-pagination--medium .bq-pagination__control,
+  .bq-pagination--medium .bq-pagination__ellipsis {
+    @apply text-[length:--bq-pagination--medium-font-size];
+
+    block-size: var(--bq-pagination--medium-control-size);
+    inline-size: var(--bq-pagination--medium-control-size);
+  }
+}
+
+:host {
+  @apply inline-block;
+}

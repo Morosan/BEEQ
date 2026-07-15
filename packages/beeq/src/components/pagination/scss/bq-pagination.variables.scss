@@ -1,0 +1,20 @@
+/* -------------------------------------------------------------------------- */
+/*                         Pagination custom properties                       */
+/* -------------------------------------------------------------------------- */
+
+:host {
+  /**
+   * @prop --bq-pagination--border-radius - Pagination control border radius
+   * @prop --bq-pagination--gap - Gap between pagination controls
+   * @prop --bq-pagination--small-control-size - Small pagination control size
+   * @prop --bq-pagination--small-font-size - Small pagination font size
+   * @prop --bq-pagination--medium-control-size - Medium pagination control size
+   * @prop --bq-pagination--medium-font-size - Medium pagination font size
+   */
+  --bq-pagination--border-radius: theme(borderRadius.xs);
+  --bq-pagination--gap: theme(spacing.xs2);
+  --bq-pagination--small-control-size: theme(spacing.xl);
+  --bq-pagination--small-font-size: theme(fontSize.s);
+  --bq-pagination--medium-control-size: theme(spacing.xxl);
+  --bq-pagination--medium-font-size: theme(fontSize.m);
+}
