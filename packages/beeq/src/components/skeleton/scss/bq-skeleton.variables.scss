@@ -1,0 +1,22 @@
+/* -------------------------------------------------------------------------- */
+/*                         Skeleton custom properties                         */
+/* -------------------------------------------------------------------------- */
+
+:host {
+  /**
+   * @prop --bq-skeleton--background-color - Skeleton background color
+   * @prop --bq-skeleton--border-radius - Skeleton border radius
+   * @prop --bq-skeleton--border-radius-circle - Skeleton circle border radius
+   * @prop --bq-skeleton--border-radius-text - Skeleton text border radius
+   * @prop --bq-skeleton--height - Skeleton height
+   * @prop --bq-skeleton--sheen-color - Skeleton sheen animation color
+   * @prop --bq-skeleton--width - Skeleton width
+   */
+  --bq-skeleton--background-color: theme(backgroundColor.ui.secondary);
+  --bq-skeleton--border-radius: theme(borderRadius.s);
+  --bq-skeleton--border-radius-circle: theme(borderRadius.full);
+  --bq-skeleton--border-radius-text: theme(borderRadius.full);
+  --bq-skeleton--height: 1rem;
+  --bq-skeleton--sheen-color: rgb(255 255 255 / 35%);
+  --bq-skeleton--width: 100%;
+}

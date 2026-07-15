@@ -1,0 +1,69 @@
+/* -------------------------------------------------------------------------- */
+/*                              Skeleton styles                               */
+/* -------------------------------------------------------------------------- */
+
+@import './bq-skeleton.variables';
+
+:host {
+  @apply block;
+
+  block-size: var(--bq-skeleton--height);
+  inline-size: var(--bq-skeleton--width);
+}
+
+.bq-skeleton {
+  @apply relative block overflow-hidden bs-full is-full;
+
+  background-color: var(--bq-skeleton--background-color);
+  border-radius: var(--bq-skeleton--border-radius);
+}
+
+.shape {
+  &--circle {
+    border-radius: var(--bq-skeleton--border-radius-circle);
+  }
+
+  &--text {
+    border-radius: var(--bq-skeleton--border-radius-text);
+  }
+}
+
+.effect {
+  &--pulse {
+    animation: bq-skeleton-pulse 1.5s ease-in-out 0.5s infinite;
+  }
+
+  &--sheen {
+    &::after {
+      @apply absolute inset-0 content-empty;
+
+      animation: bq-skeleton-sheen 1.75s linear infinite;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--bq-skeleton--sheen-color) 50%,
+        transparent 100%
+      );
+      transform: translateX(-100%);
+    }
+  }
+}
+
+@keyframes bq-skeleton-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes bq-skeleton-sheen {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .effect--pulse,
+  .effect--sheen::after {
+    animation: none;
+  }
+}

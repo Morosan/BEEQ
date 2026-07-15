@@ -24,6 +24,7 @@ import { TProgressBorderShape, TProgressThickness, TProgressType } from "./compo
 import { TRadioGroupOrientation } from "./components/radio-group/bq-radio-group.types";
 import { TSelectValue } from "./components/select/bq-select";
 import { TSideMenuAppearance, TSideMenuSize } from "./components/side-menu/bq-side-menu.types";
+import { TSkeletonEffect, TSkeletonShape } from "./components/skeleton/bq-skeleton.types";
 import { TSliderType, TSliderValue } from "./components/slider/bq-slider.types";
 import { TSpinnerSize, TSpinnerTextPosition } from "./components/spinner/bq-spinner.types";
 import { TStatusType } from "./components/status/bq-status.types";
@@ -53,6 +54,7 @@ export { TProgressBorderShape, TProgressThickness, TProgressType } from "./compo
 export { TRadioGroupOrientation } from "./components/radio-group/bq-radio-group.types";
 export { TSelectValue } from "./components/select/bq-select";
 export { TSideMenuAppearance, TSideMenuSize } from "./components/side-menu/bq-side-menu.types";
+export { TSkeletonEffect, TSkeletonShape } from "./components/skeleton/bq-skeleton.types";
 export { TSliderType, TSliderValue } from "./components/slider/bq-slider.types";
 export { TSpinnerSize, TSpinnerTextPosition } from "./components/spinner/bq-spinner.types";
 export { TStatusType } from "./components/status/bq-status.types";
@@ -2345,6 +2347,48 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
+    }
+    /**
+     * The Skeleton component is a visual placeholder that previews where content will appear while it loads.
+     * @example How to use it
+     * ```html
+     * <bq-skeleton effect="sheen"></bq-skeleton>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @attr {"none" | "pulse" | "sheen"} effect - The animation effect applied to the skeleton.
+     * @attr {string} height - The skeleton height.
+     * @attr {"rectangle" | "circle" | "text"} shape - The skeleton shape.
+     * @attr {string} width - The skeleton width.
+     * @cssprop --bq-skeleton--background-color - The skeleton background color.
+     * @cssprop --bq-skeleton--border-radius - The skeleton border radius.
+     * @cssprop --bq-skeleton--border-radius-circle - The skeleton circle border radius.
+     * @cssprop --bq-skeleton--border-radius-text - The skeleton text border radius.
+     * @cssprop --bq-skeleton--height - The skeleton height.
+     * @cssprop --bq-skeleton--sheen-color - The skeleton sheen animation color.
+     * @cssprop --bq-skeleton--width - The skeleton width.
+     */
+    interface BqSkeleton {
+        /**
+          * The animation effect applied to the skeleton
+          * @default 'none'
+         */
+        "effect": TSkeletonEffect;
+        /**
+          * The skeleton height
+          * @default '1rem'
+         */
+        "height": string;
+        /**
+          * The skeleton shape
+          * @default 'rectangle'
+         */
+        "shape": TSkeletonShape;
+        /**
+          * The skeleton width
+          * @default '100%'
+         */
+        "width": string;
     }
     /**
      * Sliders provide a visual representation of adjustable content, enabling users to change values by dragging a handle along a horizontal track.
@@ -4866,6 +4910,32 @@ declare global {
         prototype: HTMLBqSideMenuItemElement;
         new (): HTMLBqSideMenuItemElement;
     };
+    /**
+     * The Skeleton component is a visual placeholder that previews where content will appear while it loads.
+     * @example How to use it
+     * ```html
+     * <bq-skeleton effect="sheen"></bq-skeleton>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @attr {"none" | "pulse" | "sheen"} effect - The animation effect applied to the skeleton.
+     * @attr {string} height - The skeleton height.
+     * @attr {"rectangle" | "circle" | "text"} shape - The skeleton shape.
+     * @attr {string} width - The skeleton width.
+     * @cssprop --bq-skeleton--background-color - The skeleton background color.
+     * @cssprop --bq-skeleton--border-radius - The skeleton border radius.
+     * @cssprop --bq-skeleton--border-radius-circle - The skeleton circle border radius.
+     * @cssprop --bq-skeleton--border-radius-text - The skeleton text border radius.
+     * @cssprop --bq-skeleton--height - The skeleton height.
+     * @cssprop --bq-skeleton--sheen-color - The skeleton sheen animation color.
+     * @cssprop --bq-skeleton--width - The skeleton width.
+     */
+    interface HTMLBqSkeletonElement extends Components.BqSkeleton, HTMLStencilElement {
+    }
+    var HTMLBqSkeletonElement: {
+        prototype: HTMLBqSkeletonElement;
+        new (): HTMLBqSkeletonElement;
+    };
     interface HTMLBqSliderElementEventMap {
         "bqChange": { value: Exclude<TSliderValue, string>; el: HTMLBqSliderElement };
         "bqBlur": HTMLBqSliderElement;
@@ -5462,6 +5532,7 @@ declare global {
         "bq-select": HTMLBqSelectElement;
         "bq-side-menu": HTMLBqSideMenuElement;
         "bq-side-menu-item": HTMLBqSideMenuItemElement;
+        "bq-skeleton": HTMLBqSkeletonElement;
         "bq-slider": HTMLBqSliderElement;
         "bq-spinner": HTMLBqSpinnerElement;
         "bq-status": HTMLBqStatusElement;
@@ -7952,6 +8023,48 @@ declare namespace LocalJSX {
         "onBqFocus"?: (event: BqSideMenuItemCustomEvent<HTMLBqSideMenuItemElement>) => void;
     }
     /**
+     * The Skeleton component is a visual placeholder that previews where content will appear while it loads.
+     * @example How to use it
+     * ```html
+     * <bq-skeleton effect="sheen"></bq-skeleton>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @attr {"none" | "pulse" | "sheen"} effect - The animation effect applied to the skeleton.
+     * @attr {string} height - The skeleton height.
+     * @attr {"rectangle" | "circle" | "text"} shape - The skeleton shape.
+     * @attr {string} width - The skeleton width.
+     * @cssprop --bq-skeleton--background-color - The skeleton background color.
+     * @cssprop --bq-skeleton--border-radius - The skeleton border radius.
+     * @cssprop --bq-skeleton--border-radius-circle - The skeleton circle border radius.
+     * @cssprop --bq-skeleton--border-radius-text - The skeleton text border radius.
+     * @cssprop --bq-skeleton--height - The skeleton height.
+     * @cssprop --bq-skeleton--sheen-color - The skeleton sheen animation color.
+     * @cssprop --bq-skeleton--width - The skeleton width.
+     */
+    interface BqSkeleton {
+        /**
+          * The animation effect applied to the skeleton
+          * @default 'none'
+         */
+        "effect"?: TSkeletonEffect;
+        /**
+          * The skeleton height
+          * @default '1rem'
+         */
+        "height"?: string;
+        /**
+          * The skeleton shape
+          * @default 'rectangle'
+         */
+        "shape"?: TSkeletonShape;
+        /**
+          * The skeleton width
+          * @default '100%'
+         */
+        "width"?: string;
+    }
+    /**
      * Sliders provide a visual representation of adjustable content, enabling users to change values by dragging a handle along a horizontal track.
      * @example How to use it
      * ```html
@@ -9193,6 +9306,12 @@ declare namespace LocalJSX {
         "collapse": boolean;
         "disabled": boolean;
     }
+    interface BqSkeletonAttributes {
+        "effect": TSkeletonEffect;
+        "height": string;
+        "shape": TSkeletonShape;
+        "width": string;
+    }
     interface BqSliderAttributes {
         "debounceTime": number;
         "disabled": boolean;
@@ -9340,6 +9459,7 @@ declare namespace LocalJSX {
         "bq-select": Omit<BqSelect, keyof BqSelectAttributes> & { [K in keyof BqSelect & keyof BqSelectAttributes]?: BqSelect[K] } & { [K in keyof BqSelect & keyof BqSelectAttributes as `attr:${K}`]?: BqSelectAttributes[K] } & { [K in keyof BqSelect & keyof BqSelectAttributes as `prop:${K}`]?: BqSelect[K] } & OneOf<"name", BqSelect["name"], BqSelectAttributes["name"]>;
         "bq-side-menu": Omit<BqSideMenu, keyof BqSideMenuAttributes> & { [K in keyof BqSideMenu & keyof BqSideMenuAttributes]?: BqSideMenu[K] } & { [K in keyof BqSideMenu & keyof BqSideMenuAttributes as `attr:${K}`]?: BqSideMenuAttributes[K] } & { [K in keyof BqSideMenu & keyof BqSideMenuAttributes as `prop:${K}`]?: BqSideMenu[K] };
         "bq-side-menu-item": Omit<BqSideMenuItem, keyof BqSideMenuItemAttributes> & { [K in keyof BqSideMenuItem & keyof BqSideMenuItemAttributes]?: BqSideMenuItem[K] } & { [K in keyof BqSideMenuItem & keyof BqSideMenuItemAttributes as `attr:${K}`]?: BqSideMenuItemAttributes[K] } & { [K in keyof BqSideMenuItem & keyof BqSideMenuItemAttributes as `prop:${K}`]?: BqSideMenuItem[K] };
+        "bq-skeleton": Omit<BqSkeleton, keyof BqSkeletonAttributes> & { [K in keyof BqSkeleton & keyof BqSkeletonAttributes]?: BqSkeleton[K] } & { [K in keyof BqSkeleton & keyof BqSkeletonAttributes as `attr:${K}`]?: BqSkeletonAttributes[K] } & { [K in keyof BqSkeleton & keyof BqSkeletonAttributes as `prop:${K}`]?: BqSkeleton[K] };
         "bq-slider": Omit<BqSlider, keyof BqSliderAttributes> & { [K in keyof BqSlider & keyof BqSliderAttributes]?: BqSlider[K] } & { [K in keyof BqSlider & keyof BqSliderAttributes as `attr:${K}`]?: BqSliderAttributes[K] } & { [K in keyof BqSlider & keyof BqSliderAttributes as `prop:${K}`]?: BqSlider[K] };
         "bq-spinner": Omit<BqSpinner, keyof BqSpinnerAttributes> & { [K in keyof BqSpinner & keyof BqSpinnerAttributes]?: BqSpinner[K] } & { [K in keyof BqSpinner & keyof BqSpinnerAttributes as `attr:${K}`]?: BqSpinnerAttributes[K] } & { [K in keyof BqSpinner & keyof BqSpinnerAttributes as `prop:${K}`]?: BqSpinner[K] };
         "bq-status": Omit<BqStatus, keyof BqStatusAttributes> & { [K in keyof BqStatus & keyof BqStatusAttributes]?: BqStatus[K] } & { [K in keyof BqStatus & keyof BqStatusAttributes as `attr:${K}`]?: BqStatusAttributes[K] } & { [K in keyof BqStatus & keyof BqStatusAttributes as `prop:${K}`]?: BqStatus[K] };
@@ -10469,6 +10589,27 @@ declare module "@stencil/core" {
              * @cssprop --bq-side-menu-item--paddingY - Side menu item horizontal padding
              */
             "bq-side-menu-item": LocalJSX.IntrinsicElements["bq-side-menu-item"] & JSXBase.HTMLAttributes<HTMLBqSideMenuItemElement>;
+            /**
+             * The Skeleton component is a visual placeholder that previews where content will appear while it loads.
+             * @example How to use it
+             * ```html
+             * <bq-skeleton effect="sheen"></bq-skeleton>
+             * ```
+             * @documentation https://www.beeq.design/
+             * @status progress
+             * @attr {"none" | "pulse" | "sheen"} effect - The animation effect applied to the skeleton.
+             * @attr {string} height - The skeleton height.
+             * @attr {"rectangle" | "circle" | "text"} shape - The skeleton shape.
+             * @attr {string} width - The skeleton width.
+             * @cssprop --bq-skeleton--background-color - The skeleton background color.
+             * @cssprop --bq-skeleton--border-radius - The skeleton border radius.
+             * @cssprop --bq-skeleton--border-radius-circle - The skeleton circle border radius.
+             * @cssprop --bq-skeleton--border-radius-text - The skeleton text border radius.
+             * @cssprop --bq-skeleton--height - The skeleton height.
+             * @cssprop --bq-skeleton--sheen-color - The skeleton sheen animation color.
+             * @cssprop --bq-skeleton--width - The skeleton width.
+             */
+            "bq-skeleton": LocalJSX.IntrinsicElements["bq-skeleton"] & JSXBase.HTMLAttributes<HTMLBqSkeletonElement>;
             /**
              * Sliders provide a visual representation of adjustable content, enabling users to change values by dragging a handle along a horizontal track.
              * @example How to use it
