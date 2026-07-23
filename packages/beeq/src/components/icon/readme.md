@@ -52,6 +52,7 @@ It is a small graphical element that is used to enhance the user interface and i
  - [bq-switch](../switch)
  - [bq-tag](../tag)
  - [bq-toast](../toast)
+ - [bq-tree-item](../tree-item)
 
 ### Graph
 ```mermaid
@@ -69,6 +70,7 @@ graph TD;
   bq-switch --> bq-icon
   bq-tag --> bq-icon
   bq-toast --> bq-icon
+  bq-tree-item --> bq-icon
   style bq-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

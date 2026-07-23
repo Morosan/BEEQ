@@ -1,0 +1,30 @@
+/* -------------------------------------------------------------------------- */
+/*                        Tree item custom properties                         */
+/* -------------------------------------------------------------------------- */
+
+:host {
+  /**
+   * @prop --bq-tree-item--background - The default item background
+   * @prop --bq-tree-item--background-hover - The item background on hover
+   * @prop --bq-tree-item--background-selected - The selected item background
+   * @prop --bq-tree-item--border-radius - The item border radius
+   * @prop --bq-tree-item--checkbox-size - The multiple-selection indicator size
+   * @prop --bq-tree-item--gap - The gap between item content
+   * @prop --bq-tree-item--hide-duration - The collapse animation duration
+   * @prop --bq-tree-item--padding-inline - The item inline padding
+   * @prop --bq-tree-item--show-duration - The expand animation duration
+   * @prop --bq-tree-item--text-color - The default item text color
+   * @prop --bq-tree-item--text-color-selected - The selected item text color
+   */
+  --bq-tree-item--background: theme(backgroundColor.transparent);
+  --bq-tree-item--background-hover: theme(backgroundColor.ui.secondary);
+  --bq-tree-item--background-selected: theme(backgroundColor.ui.brand-alt);
+  --bq-tree-item--border-radius: theme(borderRadius.s);
+  --bq-tree-item--checkbox-size: 16px;
+  --bq-tree-item--gap: theme(spacing.xs);
+  --bq-tree-item--hide-duration: 150ms;
+  --bq-tree-item--padding-inline: theme(spacing.xs);
+  --bq-tree-item--show-duration: 200ms;
+  --bq-tree-item--text-color: theme(textColor.primary);
+  --bq-tree-item--text-color-selected: theme(textColor.brand);
+}

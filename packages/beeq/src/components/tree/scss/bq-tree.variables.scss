@@ -1,0 +1,21 @@
+/* -------------------------------------------------------------------------- */
+/*                           Tree custom properties                           */
+/* -------------------------------------------------------------------------- */
+
+:host {
+  /**
+   * @prop --bq-tree--indent-guide-color - The color of nested indentation guides
+   * @prop --bq-tree--indent-guide-offset - The vertical inset of indentation guides
+   * @prop --bq-tree--indent-guide-style - The line style of indentation guides
+   * @prop --bq-tree--indent-guide-width - The width of indentation guides
+   * @prop --bq-tree--indent-size - The indentation applied to each nested level
+   */
+  --bq-tree--indent-guide-color: theme(stroke.primary);
+  --bq-tree--indent-guide-offset: 0px;
+  --bq-tree--indent-guide-style: solid;
+  --bq-tree--indent-guide-width: 0px;
+  --bq-tree--indent-size: theme(spacing.xl);
+
+  --bq-tree--item-height: 40px;
+  --bq-tree--item-font-size: theme(fontSize.m);
+}

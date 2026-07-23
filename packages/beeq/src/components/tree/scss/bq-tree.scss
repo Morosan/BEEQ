@@ -1,0 +1,23 @@
+/* -------------------------------------------------------------------------- */
+/*                                Tree styles                                 */
+/* -------------------------------------------------------------------------- */
+
+@import './bq-tree.variables';
+
+:host {
+  @apply block;
+}
+
+:host([size='small']) {
+  --bq-tree--item-height: 32px;
+  --bq-tree--item-font-size: theme(fontSize.s);
+}
+
+:host([size='large']) {
+  --bq-tree--item-height: 48px;
+  --bq-tree--item-font-size: theme(fontSize.l);
+}
+
+.bq-tree {
+  @apply flex flex-col text-primary;
+}

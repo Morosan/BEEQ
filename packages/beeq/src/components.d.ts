@@ -34,6 +34,7 @@ import { TTabOrientation, TTabPlacement, TTabSize } from "./components/tab/bq-ta
 import { TTagBorderRadius, TTagColor, TTagSize, TTagVariant } from "./components/tag/bq-tag.types";
 import { TTextareaAutoCapitalize, TTextareaWrap } from "./components/textarea/bq-textarea.types";
 import { TToastBorderRadius, TToastPlacement, TToastType } from "./components/toast/bq-toast.types";
+import { TTreeSelection, TTreeSelectionChangeEventDetail, TTreeSize } from "./components/tree/bq-tree.types";
 export { TAccordionAppearance, TAccordionSize } from "./components/accordion/bq-accordion.types";
 export { TAlertBorderRadius, TAlertType } from "./components/alert/bq-alert.types";
 export { TAvatarShape, TAvatarSize } from "./components/avatar/bq-avatar.types";
@@ -63,6 +64,7 @@ export { TTabOrientation, TTabPlacement, TTabSize } from "./components/tab/bq-ta
 export { TTagBorderRadius, TTagColor, TTagSize, TTagVariant } from "./components/tag/bq-tag.types";
 export { TTextareaAutoCapitalize, TTextareaWrap } from "./components/textarea/bq-textarea.types";
 export { TToastBorderRadius, TToastPlacement, TToastType } from "./components/toast/bq-toast.types";
+export { TTreeSelection, TTreeSelectionChangeEventDetail, TTreeSize } from "./components/tree/bq-tree.types";
 export namespace Components {
     /**
      * The Accordion is a UI component that allows users to toggle between showing and hiding content sections. It provides a collapsible functionality, where only one section can be expanded at a time, while the others remain collapsed.
@@ -3235,6 +3237,118 @@ export namespace Components {
          */
         "visible"?: boolean;
     }
+    /**
+     * Trees display hierarchical collections of selectable items that can be expanded and collapsed.
+     * @example How to use it
+     * ```html
+     * <bq-tree selection="single">
+     * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+     * </bq-tree>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-tree-item
+     * @attr {"single" | "multiple" | "leaf" | "leaf-multiple"} [selection="single"] - The selection behavior of the tree.
+     * @attr {"small" | "medium" | "large"} [size="medium"] - The size of the tree and its items.
+     * @event bqSelectionChange - Emitted when the tree selection changes.
+     * @cssprop --bq-tree--indent-guide-color - The color of nested indentation guides.
+     * @cssprop --bq-tree--indent-guide-offset - The vertical inset of indentation guides.
+     * @cssprop --bq-tree--indent-guide-style - The line style of indentation guides.
+     * @cssprop --bq-tree--indent-guide-width - The width of indentation guides.
+     * @cssprop --bq-tree--indent-size - The indentation applied to each nested level.
+     * @cssprop --bq-tree--item-font-size - The item label font size.
+     * @cssprop --bq-tree--item-height - The minimum item row height.
+     */
+    interface BqTree {
+        /**
+          * The selection behavior of the tree.
+          * @default 'single'
+         */
+        "selection": TTreeSelection;
+        /**
+          * The size of the tree and its items.
+          * @default 'medium'
+         */
+        "size": TTreeSize;
+    }
+    /**
+     * A tree item represents one node in a hierarchical `bq-tree`.
+     * @example How to use it
+     * ```html
+     * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-icon
+     * @dependency bq-spinner
+     * @attr {boolean} [disabled=false] - Disables the tree item.
+     * @attr {boolean} [expanded=false] - Expands the tree item.
+     * @attr {boolean} [indeterminate=false] - Displays an indeterminate selection state.
+     * @attr {boolean} [lazy=false] - Enables lazy loading behavior.
+     * @attr {boolean} [selected=false] - Displays the tree item as selected.
+     * @attr {number} [tabindex=-1] - Sets the item in or out of the tree's roving tab order.
+     * @method getChildrenItems() - Gets the direct child tree items.
+     * @method vFocus() - Moves focus to the tree item.
+     * @event bqAfterCollapse - Emitted after the tree item collapses.
+     * @event bqAfterExpand - Emitted after the tree item expands.
+     * @event bqCollapse - Emitted before the tree item collapses; cancelable.
+     * @event bqExpand - Emitted before the tree item expands; cancelable.
+     * @event bqLazyLoad - Emitted when a lazy item is expanded and needs its children loaded.
+     * @cssprop --bq-tree-item--hide-duration - The collapse animation duration.
+     * @cssprop --bq-tree-item--background - The default item background.
+     * @cssprop --bq-tree-item--background-hover - The item background on hover.
+     * @cssprop --bq-tree-item--background-selected - The selected item background.
+     * @cssprop --bq-tree-item--border-radius - The item border radius.
+     * @cssprop --bq-tree-item--checkbox-size - The multiple-selection indicator size.
+     * @cssprop --bq-tree-item--gap - The gap between item content.
+     * @cssprop --bq-tree-item--padding-inline - The item inline padding.
+     * @cssprop --bq-tree-item--show-duration - The expand animation duration.
+     * @cssprop --bq-tree-item--text-color - The default item text color.
+     * @cssprop --bq-tree-item--text-color-selected - The selected item text color.
+     */
+    interface BqTreeItem {
+        /**
+          * Disables the tree item.
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Expands the tree item.
+          * @default false
+         */
+        "expanded": boolean;
+        /**
+          * Gets the direct child tree items.
+          * @param options - Controls whether disabled children are included.
+          * @returns A promise containing the direct child tree items.
+         */
+        "getChildrenItems": (options?: { includeDisabled?: boolean; }) => Promise<HTMLBqTreeItemElement[]>;
+        /**
+          * Displays an indeterminate selection state.
+          * @default false
+         */
+        "indeterminate": boolean;
+        /**
+          * Enables lazy loading behavior.
+          * @default false
+         */
+        "lazy": boolean;
+        /**
+          * Displays the tree item as selected.
+          * @default false
+         */
+        "selected": boolean;
+        /**
+          * Sets the item in or out of the tree's roving tab order.
+          * @default -1
+         */
+        "tabIndex": number;
+        /**
+          * Moves focus to the tree item.
+          * @returns A promise that resolves after focus is moved.
+         */
+        "vFocus": () => Promise<void>;
+    }
 }
 export interface BqAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3347,6 +3461,14 @@ export interface BqToastCustomEvent<T> extends CustomEvent<T> {
 export interface BqTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBqTooltipElement;
+}
+export interface BqTreeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLBqTreeElement;
+}
+export interface BqTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLBqTreeItemElement;
 }
 declare global {
     interface HTMLBqAccordionElementEventMap {
@@ -5431,6 +5553,101 @@ declare global {
         prototype: HTMLBqTooltipElement;
         new (): HTMLBqTooltipElement;
     };
+    interface HTMLBqTreeElementEventMap {
+        "bqSelectionChange": TTreeSelectionChangeEventDetail;
+    }
+    /**
+     * Trees display hierarchical collections of selectable items that can be expanded and collapsed.
+     * @example How to use it
+     * ```html
+     * <bq-tree selection="single">
+     * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+     * </bq-tree>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-tree-item
+     * @attr {"single" | "multiple" | "leaf" | "leaf-multiple"} [selection="single"] - The selection behavior of the tree.
+     * @attr {"small" | "medium" | "large"} [size="medium"] - The size of the tree and its items.
+     * @event bqSelectionChange - Emitted when the tree selection changes.
+     * @cssprop --bq-tree--indent-guide-color - The color of nested indentation guides.
+     * @cssprop --bq-tree--indent-guide-offset - The vertical inset of indentation guides.
+     * @cssprop --bq-tree--indent-guide-style - The line style of indentation guides.
+     * @cssprop --bq-tree--indent-guide-width - The width of indentation guides.
+     * @cssprop --bq-tree--indent-size - The indentation applied to each nested level.
+     * @cssprop --bq-tree--item-font-size - The item label font size.
+     * @cssprop --bq-tree--item-height - The minimum item row height.
+     */
+    interface HTMLBqTreeElement extends Components.BqTree, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLBqTreeElementEventMap>(type: K, listener: (this: HTMLBqTreeElement, ev: BqTreeCustomEvent<HTMLBqTreeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLBqTreeElementEventMap>(type: K, listener: (this: HTMLBqTreeElement, ev: BqTreeCustomEvent<HTMLBqTreeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLBqTreeElement: {
+        prototype: HTMLBqTreeElement;
+        new (): HTMLBqTreeElement;
+    };
+    interface HTMLBqTreeItemElementEventMap {
+        "bqAfterCollapse": HTMLBqTreeItemElement;
+        "bqAfterExpand": HTMLBqTreeItemElement;
+        "bqCollapse": HTMLBqTreeItemElement;
+        "bqExpand": HTMLBqTreeItemElement;
+        "bqLazyLoad": HTMLBqTreeItemElement;
+    }
+    /**
+     * A tree item represents one node in a hierarchical `bq-tree`.
+     * @example How to use it
+     * ```html
+     * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-icon
+     * @dependency bq-spinner
+     * @attr {boolean} [disabled=false] - Disables the tree item.
+     * @attr {boolean} [expanded=false] - Expands the tree item.
+     * @attr {boolean} [indeterminate=false] - Displays an indeterminate selection state.
+     * @attr {boolean} [lazy=false] - Enables lazy loading behavior.
+     * @attr {boolean} [selected=false] - Displays the tree item as selected.
+     * @attr {number} [tabindex=-1] - Sets the item in or out of the tree's roving tab order.
+     * @method getChildrenItems() - Gets the direct child tree items.
+     * @method vFocus() - Moves focus to the tree item.
+     * @event bqAfterCollapse - Emitted after the tree item collapses.
+     * @event bqAfterExpand - Emitted after the tree item expands.
+     * @event bqCollapse - Emitted before the tree item collapses; cancelable.
+     * @event bqExpand - Emitted before the tree item expands; cancelable.
+     * @event bqLazyLoad - Emitted when a lazy item is expanded and needs its children loaded.
+     * @cssprop --bq-tree-item--hide-duration - The collapse animation duration.
+     * @cssprop --bq-tree-item--background - The default item background.
+     * @cssprop --bq-tree-item--background-hover - The item background on hover.
+     * @cssprop --bq-tree-item--background-selected - The selected item background.
+     * @cssprop --bq-tree-item--border-radius - The item border radius.
+     * @cssprop --bq-tree-item--checkbox-size - The multiple-selection indicator size.
+     * @cssprop --bq-tree-item--gap - The gap between item content.
+     * @cssprop --bq-tree-item--padding-inline - The item inline padding.
+     * @cssprop --bq-tree-item--show-duration - The expand animation duration.
+     * @cssprop --bq-tree-item--text-color - The default item text color.
+     * @cssprop --bq-tree-item--text-color-selected - The selected item text color.
+     */
+    interface HTMLBqTreeItemElement extends Components.BqTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLBqTreeItemElementEventMap>(type: K, listener: (this: HTMLBqTreeItemElement, ev: BqTreeItemCustomEvent<HTMLBqTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLBqTreeItemElementEventMap>(type: K, listener: (this: HTMLBqTreeItemElement, ev: BqTreeItemCustomEvent<HTMLBqTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLBqTreeItemElement: {
+        prototype: HTMLBqTreeItemElement;
+        new (): HTMLBqTreeItemElement;
+    };
     interface HTMLElementTagNameMap {
         "bq-accordion": HTMLBqAccordionElement;
         "bq-accordion-group": HTMLBqAccordionGroupElement;
@@ -5474,6 +5691,8 @@ declare global {
         "bq-textarea": HTMLBqTextareaElement;
         "bq-toast": HTMLBqToastElement;
         "bq-tooltip": HTMLBqTooltipElement;
+        "bq-tree": HTMLBqTreeElement;
+        "bq-tree-item": HTMLBqTreeItemElement;
     }
 }
 declare namespace LocalJSX {
@@ -8914,6 +9133,131 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    /**
+     * Trees display hierarchical collections of selectable items that can be expanded and collapsed.
+     * @example How to use it
+     * ```html
+     * <bq-tree selection="single">
+     * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+     * </bq-tree>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-tree-item
+     * @attr {"single" | "multiple" | "leaf" | "leaf-multiple"} [selection="single"] - The selection behavior of the tree.
+     * @attr {"small" | "medium" | "large"} [size="medium"] - The size of the tree and its items.
+     * @event bqSelectionChange - Emitted when the tree selection changes.
+     * @cssprop --bq-tree--indent-guide-color - The color of nested indentation guides.
+     * @cssprop --bq-tree--indent-guide-offset - The vertical inset of indentation guides.
+     * @cssprop --bq-tree--indent-guide-style - The line style of indentation guides.
+     * @cssprop --bq-tree--indent-guide-width - The width of indentation guides.
+     * @cssprop --bq-tree--indent-size - The indentation applied to each nested level.
+     * @cssprop --bq-tree--item-font-size - The item label font size.
+     * @cssprop --bq-tree--item-height - The minimum item row height.
+     */
+    interface BqTree {
+        /**
+          * Emitted when the tree selection changes.
+         */
+        "onBqSelectionChange"?: (event: BqTreeCustomEvent<TTreeSelectionChangeEventDetail>) => void;
+        /**
+          * The selection behavior of the tree.
+          * @default 'single'
+         */
+        "selection"?: TTreeSelection;
+        /**
+          * The size of the tree and its items.
+          * @default 'medium'
+         */
+        "size"?: TTreeSize;
+    }
+    /**
+     * A tree item represents one node in a hierarchical `bq-tree`.
+     * @example How to use it
+     * ```html
+     * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+     * ```
+     * @documentation https://www.beeq.design/
+     * @status progress
+     * @dependency bq-icon
+     * @dependency bq-spinner
+     * @attr {boolean} [disabled=false] - Disables the tree item.
+     * @attr {boolean} [expanded=false] - Expands the tree item.
+     * @attr {boolean} [indeterminate=false] - Displays an indeterminate selection state.
+     * @attr {boolean} [lazy=false] - Enables lazy loading behavior.
+     * @attr {boolean} [selected=false] - Displays the tree item as selected.
+     * @attr {number} [tabindex=-1] - Sets the item in or out of the tree's roving tab order.
+     * @method getChildrenItems() - Gets the direct child tree items.
+     * @method vFocus() - Moves focus to the tree item.
+     * @event bqAfterCollapse - Emitted after the tree item collapses.
+     * @event bqAfterExpand - Emitted after the tree item expands.
+     * @event bqCollapse - Emitted before the tree item collapses; cancelable.
+     * @event bqExpand - Emitted before the tree item expands; cancelable.
+     * @event bqLazyLoad - Emitted when a lazy item is expanded and needs its children loaded.
+     * @cssprop --bq-tree-item--hide-duration - The collapse animation duration.
+     * @cssprop --bq-tree-item--background - The default item background.
+     * @cssprop --bq-tree-item--background-hover - The item background on hover.
+     * @cssprop --bq-tree-item--background-selected - The selected item background.
+     * @cssprop --bq-tree-item--border-radius - The item border radius.
+     * @cssprop --bq-tree-item--checkbox-size - The multiple-selection indicator size.
+     * @cssprop --bq-tree-item--gap - The gap between item content.
+     * @cssprop --bq-tree-item--padding-inline - The item inline padding.
+     * @cssprop --bq-tree-item--show-duration - The expand animation duration.
+     * @cssprop --bq-tree-item--text-color - The default item text color.
+     * @cssprop --bq-tree-item--text-color-selected - The selected item text color.
+     */
+    interface BqTreeItem {
+        /**
+          * Disables the tree item.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Expands the tree item.
+          * @default false
+         */
+        "expanded"?: boolean;
+        /**
+          * Displays an indeterminate selection state.
+          * @default false
+         */
+        "indeterminate"?: boolean;
+        /**
+          * Enables lazy loading behavior.
+          * @default false
+         */
+        "lazy"?: boolean;
+        /**
+          * Emitted after the tree item collapses.
+         */
+        "onBqAfterCollapse"?: (event: BqTreeItemCustomEvent<HTMLBqTreeItemElement>) => void;
+        /**
+          * Emitted after the tree item expands.
+         */
+        "onBqAfterExpand"?: (event: BqTreeItemCustomEvent<HTMLBqTreeItemElement>) => void;
+        /**
+          * Emitted before the tree item collapses; cancel the event to keep it expanded.
+         */
+        "onBqCollapse"?: (event: BqTreeItemCustomEvent<HTMLBqTreeItemElement>) => void;
+        /**
+          * Emitted before the tree item expands; cancel the event to keep it collapsed.
+         */
+        "onBqExpand"?: (event: BqTreeItemCustomEvent<HTMLBqTreeItemElement>) => void;
+        /**
+          * Emitted when a lazy item needs its children loaded.
+         */
+        "onBqLazyLoad"?: (event: BqTreeItemCustomEvent<HTMLBqTreeItemElement>) => void;
+        /**
+          * Displays the tree item as selected.
+          * @default false
+         */
+        "selected"?: boolean;
+        /**
+          * Sets the item in or out of the tree's roving tab order.
+          * @default -1
+         */
+        "tabIndex"?: number;
+    }
 
     interface BqAccordionAttributes {
         "appearance": TAccordionAppearance;
@@ -9308,6 +9652,18 @@ declare namespace LocalJSX {
         "displayOn": 'click' | 'hover';
         "visible": boolean;
     }
+    interface BqTreeAttributes {
+        "selection": TTreeSelection;
+        "size": TTreeSize;
+    }
+    interface BqTreeItemAttributes {
+        "disabled": boolean;
+        "expanded": boolean;
+        "indeterminate": boolean;
+        "lazy": boolean;
+        "selected": boolean;
+        "tabIndex": number;
+    }
 
     interface IntrinsicElements {
         "bq-accordion": Omit<BqAccordion, keyof BqAccordionAttributes> & { [K in keyof BqAccordion & keyof BqAccordionAttributes]?: BqAccordion[K] } & { [K in keyof BqAccordion & keyof BqAccordionAttributes as `attr:${K}`]?: BqAccordionAttributes[K] } & { [K in keyof BqAccordion & keyof BqAccordionAttributes as `prop:${K}`]?: BqAccordion[K] };
@@ -9352,6 +9708,8 @@ declare namespace LocalJSX {
         "bq-textarea": Omit<BqTextarea, keyof BqTextareaAttributes> & { [K in keyof BqTextarea & keyof BqTextareaAttributes]?: BqTextarea[K] } & { [K in keyof BqTextarea & keyof BqTextareaAttributes as `attr:${K}`]?: BqTextareaAttributes[K] } & { [K in keyof BqTextarea & keyof BqTextareaAttributes as `prop:${K}`]?: BqTextarea[K] } & OneOf<"name", BqTextarea["name"], BqTextareaAttributes["name"]> & OneOf<"placeholder", BqTextarea["placeholder"], BqTextareaAttributes["placeholder"]>;
         "bq-toast": Omit<BqToast, keyof BqToastAttributes> & { [K in keyof BqToast & keyof BqToastAttributes]?: BqToast[K] } & { [K in keyof BqToast & keyof BqToastAttributes as `attr:${K}`]?: BqToastAttributes[K] } & { [K in keyof BqToast & keyof BqToastAttributes as `prop:${K}`]?: BqToast[K] };
         "bq-tooltip": Omit<BqTooltip, keyof BqTooltipAttributes> & { [K in keyof BqTooltip & keyof BqTooltipAttributes]?: BqTooltip[K] } & { [K in keyof BqTooltip & keyof BqTooltipAttributes as `attr:${K}`]?: BqTooltipAttributes[K] } & { [K in keyof BqTooltip & keyof BqTooltipAttributes as `prop:${K}`]?: BqTooltip[K] };
+        "bq-tree": Omit<BqTree, keyof BqTreeAttributes> & { [K in keyof BqTree & keyof BqTreeAttributes]?: BqTree[K] } & { [K in keyof BqTree & keyof BqTreeAttributes as `attr:${K}`]?: BqTreeAttributes[K] } & { [K in keyof BqTree & keyof BqTreeAttributes as `prop:${K}`]?: BqTree[K] };
+        "bq-tree-item": Omit<BqTreeItem, keyof BqTreeItemAttributes> & { [K in keyof BqTreeItem & keyof BqTreeItemAttributes]?: BqTreeItem[K] } & { [K in keyof BqTreeItem & keyof BqTreeItemAttributes as `attr:${K}`]?: BqTreeItemAttributes[K] } & { [K in keyof BqTreeItem & keyof BqTreeItemAttributes as `prop:${K}`]?: BqTreeItem[K] };
     }
 }
 export { LocalJSX as JSX };
@@ -10853,6 +11211,65 @@ declare module "@stencil/core" {
              * @cssprop --bq-tooltip--z-index: Tooltip z-index
              */
             "bq-tooltip": LocalJSX.IntrinsicElements["bq-tooltip"] & JSXBase.HTMLAttributes<HTMLBqTooltipElement>;
+            /**
+             * Trees display hierarchical collections of selectable items that can be expanded and collapsed.
+             * @example How to use it
+             * ```html
+             * <bq-tree selection="single">
+             * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+             * </bq-tree>
+             * ```
+             * @documentation https://www.beeq.design/
+             * @status progress
+             * @dependency bq-tree-item
+             * @attr {"single" | "multiple" | "leaf" | "leaf-multiple"} [selection="single"] - The selection behavior of the tree.
+             * @attr {"small" | "medium" | "large"} [size="medium"] - The size of the tree and its items.
+             * @event bqSelectionChange - Emitted when the tree selection changes.
+             * @cssprop --bq-tree--indent-guide-color - The color of nested indentation guides.
+             * @cssprop --bq-tree--indent-guide-offset - The vertical inset of indentation guides.
+             * @cssprop --bq-tree--indent-guide-style - The line style of indentation guides.
+             * @cssprop --bq-tree--indent-guide-width - The width of indentation guides.
+             * @cssprop --bq-tree--indent-size - The indentation applied to each nested level.
+             * @cssprop --bq-tree--item-font-size - The item label font size.
+             * @cssprop --bq-tree--item-height - The minimum item row height.
+             */
+            "bq-tree": LocalJSX.IntrinsicElements["bq-tree"] & JSXBase.HTMLAttributes<HTMLBqTreeElement>;
+            /**
+             * A tree item represents one node in a hierarchical `bq-tree`.
+             * @example How to use it
+             * ```html
+             * <bq-tree-item expanded>Parent<bq-tree-item>Child</bq-tree-item></bq-tree-item>
+             * ```
+             * @documentation https://www.beeq.design/
+             * @status progress
+             * @dependency bq-icon
+             * @dependency bq-spinner
+             * @attr {boolean} [disabled=false] - Disables the tree item.
+             * @attr {boolean} [expanded=false] - Expands the tree item.
+             * @attr {boolean} [indeterminate=false] - Displays an indeterminate selection state.
+             * @attr {boolean} [lazy=false] - Enables lazy loading behavior.
+             * @attr {boolean} [selected=false] - Displays the tree item as selected.
+             * @attr {number} [tabindex=-1] - Sets the item in or out of the tree's roving tab order.
+             * @method getChildrenItems() - Gets the direct child tree items.
+             * @method vFocus() - Moves focus to the tree item.
+             * @event bqAfterCollapse - Emitted after the tree item collapses.
+             * @event bqAfterExpand - Emitted after the tree item expands.
+             * @event bqCollapse - Emitted before the tree item collapses; cancelable.
+             * @event bqExpand - Emitted before the tree item expands; cancelable.
+             * @event bqLazyLoad - Emitted when a lazy item is expanded and needs its children loaded.
+             * @cssprop --bq-tree-item--hide-duration - The collapse animation duration.
+             * @cssprop --bq-tree-item--background - The default item background.
+             * @cssprop --bq-tree-item--background-hover - The item background on hover.
+             * @cssprop --bq-tree-item--background-selected - The selected item background.
+             * @cssprop --bq-tree-item--border-radius - The item border radius.
+             * @cssprop --bq-tree-item--checkbox-size - The multiple-selection indicator size.
+             * @cssprop --bq-tree-item--gap - The gap between item content.
+             * @cssprop --bq-tree-item--padding-inline - The item inline padding.
+             * @cssprop --bq-tree-item--show-duration - The expand animation duration.
+             * @cssprop --bq-tree-item--text-color - The default item text color.
+             * @cssprop --bq-tree-item--text-color-selected - The selected item text color.
+             */
+            "bq-tree-item": LocalJSX.IntrinsicElements["bq-tree-item"] & JSXBase.HTMLAttributes<HTMLBqTreeItemElement>;
         }
     }
 }

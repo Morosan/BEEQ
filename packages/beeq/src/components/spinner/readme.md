@@ -36,6 +36,19 @@ Spinners are designed for users to display data loading.
 | `"text"`        | The `<span>` tag element that renders the label text inside the component. |
 
 
+## Dependencies
+
+### Used by
+
+ - [bq-tree-item](../tree-item)
+
+### Graph
+```mermaid
+graph TD;
+  bq-tree-item --> bq-spinner
+  style bq-spinner fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
